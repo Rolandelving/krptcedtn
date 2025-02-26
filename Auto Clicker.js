@@ -1,5 +1,4 @@
 let autoClickerActive = false;
-let interval = 100;
 let clickInterval;
 let clickType = "left"; // Default to left click
 
@@ -10,18 +9,23 @@ function autoClick() {
         bubbles: true,
         cancelable: true,
         view: window,
-        button: clickType === "right" ? 2 : 0, // 0 = left, 2 = right
+        button: clickType === "right" ? 2 : 0, // 0 = left click, 2 = right click
     });
 
-    document.body.dispatchEvent(event);
+    // Dispatch event on the currently hovered element
+    let target = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
+    if (target) {
+        target.dispatchEvent(event);
+    }
 }
 
 function toggleAutoClicker() {
     autoClickerActive = !autoClickerActive;
     
     if (autoClickerActive) {
-        interval = document.getElementById('interval') ? document.getElementById('interval').value : 100;
+        let interval = document.getElementById('interval') ? parseInt(document.getElementById('interval').value) : 100;
         clickType = document.getElementById('clickType') ? document.getElementById('clickType').value : "left";
+        
         clickInterval = setInterval(autoClick, interval);
     } else {
         clearInterval(clickInterval);
