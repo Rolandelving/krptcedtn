@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    @font-face {
+      font-family: 'BlackDahlia';
+      src: url('https://github.com/Rolandelving/krptcedtn/raw/refs/heads/main/BlackDahlia-LBRG.woff2') format('woff2'),
+           url('https://github.com/Rolandelving/krptcedtn/raw/refs/heads/main/BlackDahlia-LBRG_1_.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    body {
+      background-color: transparent;
+      font-family: 'BlackDahlia', sans-serif;
+      color: white;
+      font-size: 28px;
+      text-shadow: 0 0 3px black;
+      padding: 20px;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  KRIPTIC LIVES AGAIN — BLACK DAHLIA FONT TEST
+</body>
+</html>
