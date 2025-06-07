@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Spotify Dashboard</title>
+  <style>
+    body {
+      background: #121212;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+    .item {
+      background: #1e1e1e;
+      margin: 10px auto;
+      padding: 15px;
+      border-left: 5px solid #1DB954;
+      border-radius: 6px;
+      max-width: 600px;
+      text-align: left;
+    }
+    h1 {
+      color: #1DB954;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Top Tracks</h1>
+  <div id="tracks"></div>
+
+  <script>
+    const token = localStorage.getItem("spotify_token");
+    if (!token) {
+      document.body.innerHTML = "<h2>Access token missing. Please login again.</h2>";
+    } else {
+      fetch("https://api.spotify.com/v1/me/top/tracks?limit=10", {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("tracks");
+        if (data.items) {
+          data.items.forEach((track, i) => {
+            const div = document.createElement("div");
+            div.className = "item";
+            div.innerHTML = `<strong>#${i + 1}</strong> — ${track.name} by ${track.artists.map(a => a.name).join(', ')}`;
+            container.appendChild(div);
+          });
+        } else {
+          container.innerHTML = "<p>Unable to load tracks.</p>";
+        }
+      });
+    }
+  </script>
+</body>
+</html>
