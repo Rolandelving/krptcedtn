@@ -1,17 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Game Bundle</title>
+  <!-- Load SDK -->
   <script src="https://cdn.jsdelivr.net/gh/testamalame/sef@main/sedk.js"></script>
 </head>
-<body>
+<body style="margin:0;padding:0;overflow:hidden;background:#000;color:#fff;">
+
+  <div id="game-container"></div>
+
   <script>
-    fetch("https://cdn.jsdelivr.net/gh/classrooms-1/swf@main/1.xml")
-      .then(r => r.text())
-      .then(xml => {
-        // do something with xml (inject, parse, etc.)
-        document.body.innerHTML += `<pre>${xml.replace(/</g,"&lt;")}</pre>`;
-      });
+    // Fetch your game XML
+    const GAME_XML_URL = "https://cdn.jsdelivr.net/gh/classrooms-1/swf@main/1.xml";
+
+    async function loadGame() {
+      try {
+        const res = await fetch(GAME_XML_URL);
+        const xml = await res.text();
+
+        // If your SDK has a specific init function, call it here:
+        // Example: SDK.load(xml);
+        // For now we’ll just dump it so you can verify it loads:
+        document.getElementById("game-container").innerText = xml;
+      } catch (err) {
+        document.body.innerHTML = `<p style="color:red">Failed to load game: ${err}</p>`;
+        console.error(err);
+      }
+    }
+
+    loadGame();
   </script>
 </body>
 </html>
