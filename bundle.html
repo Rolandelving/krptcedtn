@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.jsdelivr.net/gh/testamalame/sef@main/sedk.js"></script>
+</head>
+<body>
+  <script>
+    fetch("https://cdn.jsdelivr.net/gh/classrooms-1/swf@main/1.xml")
+      .then(r => r.text())
+      .then(xml => {
+        // do something with xml (inject, parse, etc.)
+        document.body.innerHTML += `<pre>${xml.replace(/</g,"&lt;")}</pre>`;
+      });
+  </script>
+</body>
+</html>
