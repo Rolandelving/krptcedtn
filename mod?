@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="user-scalable=yes, initial-scale=1, minimum-scale=1, maximum-scale=10, width=device-width" />
+<title>FNF Vs. Sonic.Exe - Play Online on Snokido</title>
+<meta name="description" content="The mod FNF Vs. Sonic.Exe for Friday Night Funkin' will offer you to face in a rap battle a mythical and legendary character, Sonic.Exe, a mysterious..." />
+<meta property="og:url" content="https://www.snokido.com/game/vs-sonicexe" />
+<meta property="og:type" content="game" />
+<meta property="og:title" content="FNF Vs. Sonic.Exe" />
+<meta property="og:image" content="https://w8.snokido.com/img/large/fnf-sonicexe.jpg" />
+<meta property="og:description" content="The mod FNF Vs. Sonic.Exe for Friday Night Funkin' will offer you to face in a rap battle a mythical and legendary character, Sonic.Exe, a mysterious version of the famous blue hedgehog that raises many questions about its origin. Many theories and creepy stories (creepypasta) have sprung up..." />
+<link rel="canonical" href="https://www.snokido.com/game/vs-sonicexe" />
+<link rel="alternate" hreflang="fr" href="https://www.snokido.fr/jeu/vs-sonicexe" />
+<link rel="alternate" hreflang="en" href="https://www.snokido.com/game/vs-sonicexe" />
+<link rel="alternate" hreflang="x-default" href="https://www.snokido.com/game/vs-sonicexe" />
+<link rel="preconnect" href="https://w8.snokido.com"/>
+<link rel="manifest" href="https://www.snokido.com/manifest.json"/>
+<link rel="icon" type="image/png" sizes="192x192"  href="https://www.snokido.com/android-icon-192x192.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.snokido.com/apple-touch-icon.png"/>
+<link rel="shortcut icon" type="image/x-icon" href="https://www.snokido.com/favicon.ico"/>
+<link rel="stylesheet" type="text/css" href="https://www.snokido.com/templates/snokiv32/style.css?150525"/>
+<script>
+NEW_PMS=0;NEW_FRS=0;AFG=0;const GAMEURL='';const ID='3349';const NETURL='https://www.snokido.com';const CDNURL='https://w8.snokido.com';const adcode='ca-games-pub-7474256871099866';const LANG='lang=en';gFull=1;gWidth=960;gHeight=540;LVL_UP = 'Congratulations you have gained a level and received a bonus of';LVL_END = 'Congratulations you have reached the <strong>maximum</strong> level!';LVL = 'Level';MINI_COMMENT = 'Your comment must contain at least 4 characters';SPAM_COMMENT = 'Please avoid emoticons spam';LAST_COMMENT = 'You have published the last comment on this game<br /><b>You can edit your previous comment</b>';ANTI_SPAM = 'Please wait a few seconds before adding a new comment';REQUEST_SENT = 'Request sent';GAME_FAVOURITE = 'Add to favorites';GAME_UNFAVOURITE = 'Remove from favorites';SHOW_CONTROL = 'Show controls';HIDE_CONTROL = 'Hide controls';FILL_IN_FORM = 'Make sure you have completed all required fields';N_NEW_PM = 'You have a new message';N_MULTI_NEW_PM1 = 'You have';N_MULTI_NEW_PM2 = 'new messages';N_NEW_FR = 'You have a new friend request';ACCEPTED_FRIEND = 'Accepted';N_MULTI_NEW_FR1 = 'You have';N_MULTI_NEW_FR2 = 'new friend requests';NEW_MSG = 'New message';N_FRS = 'Friend request waiting!';N_PMS = 'New message!';N_FR_VIEW = 'View the request';N_PM_VIEW = 'View message';QUIT = 'Close';SENDING = 'Sending...';CONTINUE = 'Continue playing';
+</script>
+<script src="https://w8.snokido.com/js/jquery.js"></script>
+<script src="https://w8.snokido.com/js/skjs3.min.js?270325"></script>
+<script type="text/javascript" async=true>!function(){var e=window.location.hostname,t=document.createElement("script"),n=document.getElementsByTagName("script")[0],a="https://cmp.inmobi.com".concat("/choice/","ZquShpAgCgJe-","/",e,"/choice.js?tag_version=V3"),p=0;t.async=!0,t.type="text/javascript",t.src=a,n.parentNode.insertBefore(t,n),function(){for(var e,t="__tcfapiLocator",n=[],a=window;a;){try{if(a.frames[t]){e=a;break}}catch(e){}if(a===window.top)break;a=a.parent}e||(!function e(){var n=a.document,p=!!a.frames[t];if(!p)if(n.body){var s=n.createElement("iframe");s.style.cssText="display:none",s.name=t,n.body.appendChild(s)}else setTimeout(e,5);return!p}(),a.__tcfapi=function(){var e,t=arguments;if(!t.length)return n;if("setGdprApplies"===t[0])t.length>3&&2===t[2]&&"boolean"==typeof t[3]&&(e=t[3],"function"==typeof t[2]&&t[2]("set",!0));else if("ping"===t[0]){var a={gdprApplies:e,cmpLoaded:!1,cmpStatus:"stub"};"function"==typeof t[2]&&t[2](a)}else"init"===t[0]&&"object"==typeof t[3]&&(t[3]=Object.assign(t[3],{tag_version:"V3"})),n.push(t)},a.addEventListener("message",(function(e){var t="string"==typeof e.data,n={};try{n=t?JSON.parse(e.data):e.data}catch(e){}var a=n.__tcfapiCall;a&&window.__tcfapi(a.command,a.version,(function(n,p){var s={__tcfapiReturn:{returnValue:n,success:p,callId:a.callId}};t&&(s=JSON.stringify(s)),e&&e.source&&e.source.postMessage&&e.source.postMessage(s,"*")}),a.parameter)}),!1))}(),function(){const e=["2:tcfeuv2","6:uspv1","7:usnatv1","8:usca","9:usvav1","10:uscov1","11:usutv1","12:usctv1"];window.__gpp_addFrame=function(e){if(!window.frames[e])if(document.body){var t=document.createElement("iframe");t.style.cssText="display:none",t.name=e,document.body.appendChild(t)}else window.setTimeout(window.__gpp_addFrame,10,e)},window.__gpp_stub=function(){var t=arguments;if(__gpp.queue=__gpp.queue||[],__gpp.events=__gpp.events||[],!t.length||1==t.length&&"queue"==t[0])return __gpp.queue;if(1==t.length&&"events"==t[0])return __gpp.events;var n=t[0],a=t.length>1?t[1]:null,p=t.length>2?t[2]:null;if("ping"===n)a({gppVersion:"1.1",cmpStatus:"stub",cmpDisplayStatus:"hidden",signalStatus:"not ready",supportedAPIs:e,cmpId:10,sectionList:[],applicableSections:[-1],gppString:"",parsedSections:{}},!0);else if("addEventListener"===n){"lastId"in __gpp||(__gpp.lastId=0),__gpp.lastId++;var s=__gpp.lastId;__gpp.events.push({id:s,callback:a,parameter:p}),a({eventName:"listenerRegistered",listenerId:s,data:!0,pingData:{gppVersion:"1.1",cmpStatus:"stub",cmpDisplayStatus:"hidden",signalStatus:"not ready",supportedAPIs:e,cmpId:10,sectionList:[],applicableSections:[-1],gppString:"",parsedSections:{}}},!0)}else if("removeEventListener"===n){for(var i=!1,o=0;o<__gpp.events.length;o++)if(__gpp.events[o].id==p){__gpp.events.splice(o,1),i=!0;break}a({eventName:"listenerRemoved",listenerId:p,data:i,pingData:{gppVersion:"1.1",cmpStatus:"stub",cmpDisplayStatus:"hidden",signalStatus:"not ready",supportedAPIs:e,cmpId:10,sectionList:[],applicableSections:[-1],gppString:"",parsedSections:{}}},!0)}else"hasSection"===n?a(!1,!0):"getSection"===n||"getField"===n?a(null,!0):__gpp.queue.push([].slice.apply(t))},window.__gpp_msghandler=function(e){var t="string"==typeof e.data;try{var n=t?JSON.parse(e.data):e.data}catch(e){n=null}if("object"==typeof n&&null!==n&&"__gppCall"in n){var a=n.__gppCall;window.__gpp(a.command,(function(n,p){var s={__gppReturn:{returnValue:n,success:p,callId:a.callId}};e.source.postMessage(t?JSON.stringify(s):s,"*")}),"parameter"in a?a.parameter:null,"version"in a?a.version:"1.1")}},"__gpp"in window&&"function"==typeof window.__gpp||(window.__gpp=window.__gpp_stub,window.addEventListener("message",window.__gpp_msghandler,!1),window.__gpp_addFrame("__gppLocator"))}();var s=function(){var e=arguments;typeof window.__uspapi!==s&&setTimeout((function(){void 0!==window.__uspapi&&window.__uspapi.apply(window.__uspapi,e)}),500)};if(void 0===window.__uspapi){window.__uspapi=s;var i=setInterval((function(){p++,window.__uspapi===s&&p<3?console.warn("USP is not accessible"):clearInterval(i)}),6e3)}}();</script>
+<link rel="dns-prefetch" href="https://universal.wgplayer.com"/>
+<script type="text/javascript" async>!function(e,t){a=e.createElement("script"),m=e.getElementsByTagName("script")[0],a.async=1,a.src=t,a.fetchPriority='high',m.parentNode.insertBefore(a,m)}(document,"https://universal.wgplayer.com/tag/?lh="+window.location.hostname+"&wp="+window.location.pathname+"&ws="+window.location.search);</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7474256871099866" crossorigin="anonymous"></script></head>
+<body>
+<header id="header">
+	<a href="https://www.snokido.com" class="logo">
+		<img src="https://www.snokido.com/images/snokido.png?v3" width="166" height="78" alt="Snokido" />
+	</a>
+	<div class="headwrap">
+		<div class="headtop">
+				<div class="search">
+					<button type="button" aria-label="Search" class="icon-search"></button>
+					 <form action="/search/" method="get" id="formSearch">
+					   <input id="search" name="Search" placeholder="Search..." autocomplete="off" type="search" maxlength="50" />
+					 </form>
+					<ul id="results"></ul>
+				</div>
+				  <button type="button" aria-label="Log in" class="icon-login"></button>
+		</div>
+		<nav>
+			 <ul id="menu">
+				<li class="navhome"><a href="https://www.snokido.com" aria-label="Home" class="icon-home"></a></li>
+				<li class="navover"><a href="https://www.snokido.com/games/action" class="border1">Action</a>
+<li class="navover"><a href="https://www.snokido.com/games/adventure" class="border2">Adventure</a>
+<li class="navover"><a href="https://www.snokido.com/games/puzzle" class="border3">Puzzle</a>
+<li class="navover"><a href="https://www.snokido.com/games/sports" class="border4">Sports</a>
+<li class="navover"><a href="https://www.snokido.com/games/fnf" class="border5">FNF</a>
+<li class="navover"><a href="https://www.snokido.com/games/multiplayer" class="border0">Multiplayer</a>
+<li class="navover"><a href="https://www.snokido.com/games/2-players" class="border0">2 players</a>
+<li id="plus" class="icon-more"></li>
+			 </ul>
+		</nav>
+	</div>
+</header>
+<main id="main">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FNF Vs. Sonic.Exe","url":"https://www.snokido.com/game/vs-sonicexe",
+"image":"https://w8.snokido.com/img/large/fnf-sonicexe.jpg","description":"The mod FNF Vs. Sonic.Exe for Friday Night Funkin' will offer you to face in a rap battle a mythical and legendary character, Sonic.Exe, a mysterious version of the famous blue hedgehog that raises many questions about...","applicationCategory":"GameApplication","operatingSystem":"Windows, Linux, MacOS",
+"aggregateRating":{"@type":"AggregateRating","ratingValue":88,"worstRating":1,"bestRating":100,"ratingCount":51354},
+"offers":{"@type":"Offer","category":"free","availability": "http://schema.org/InStock","priceCurrency":"EUR","price":"0"}}</script><div class="main">
+  <div class="Gside">
+    <div id="bgame" class="border">
+      <div id="game" style="width:960px; height:540px;display:none;"><iframe title="game" id="embed" src="about:blank" allow="autoplay;cross-origin-isolated" scrolling="no" allowfullscreen></iframe></div><div id="loader" class="preview"><div id="playGame"><img src="https://w8.snokido.com/img/large/fnf-sonicexe.jpg" alt="FNF Vs. Sonic.Exe" width="900" height="500" class="noglow" /><div class="play"><div class="playBT playNoglow"><span style="font-size:23px">Play Now</span><span class="icon-arrow"></span></div></div></div></div>
+	<script>function removeWG(){document.querySelector("#loader").remove();document.querySelector("#game").style.display="block";$(".warn").attr("class","note");focusGame();document.querySelector("#embed").setAttribute("src", "https://w8.snokido.com/games/html5/friday-night-funkin/sonicchoice.html?050224");}
+	function loadWG(){try{window[preroll.config.loaderObjectName].fetchAd(()=>{try{removeWG();}catch(e){console.warn("removeWG not found");}});}catch(e){removeWG();}}
+	function loadGame(){removeWG();} 
+	document.querySelector("#playGame").addEventListener("click", loadWG);
+	window["wgSplashPreroll"]=false;
+	window["wgAutoMidroll"]=false;
+	window["wgGameContainerID"]="#loader";
+	</script><script>setTimeout(function(){UserAddPlay()},130000);gameSize();</script>            
+<div class="note">
+<a href="https://www.snokido.com/game/friday-night-funkin" tooltip="Friday Night Funkin"><img src="https://w8.snokido.com/img/fnf2/fnf.png" width="30" height="25" alt="Friday Night Funkin"></a>
+<a href="https://www.snokido.com/game/indie-cross" tooltip="Indie Cross"><img src="https://w8.snokido.com/img/fnf2/indiecross.png" width="31" height="27" alt="FNF Indie Cross"></a>
+<a href="https://www.snokido.com/game/vs-sonicexe" tooltip="Sonic.Exe"><img src="https://w8.snokido.com/img/fnf2/sonicexe.png?200722" width="33" height="30" alt="FNF vs Sonic.exe 3.0"></a>
+<a href="https://www.snokido.com/game/vs-impostor" tooltip="Impostor V4"><img src="https://w8.snokido.com/img/fnf2/impostor.png" width="25" height="30" alt="FNF vs Impostor V4"></a>
+<a href="https://www.snokido.com/game/fnf-vs-marios-madness" tooltip="Mario's Madness V2 (WIP)"><img src="https://w8.snokido.com/img/fnf2/mario-madness.png" width="28" height="30" alt="FNF vs Mario's Madness"></a> 
+<a href="https://www.snokido.com/game/fnf-hit-single-real" tooltip="Silly Billy"><img src="https://w8.snokido.com/img/fnf2/sillybilly.png" width="33" height="31" alt="FNF Hit Single Real"></a> 
+<a href="https://www.snokido.com/game/fnf-lobotomy-dash" tooltip="Lobotomy Dash"><img src="https://w8.snokido.com/img/fnf2/lobotomy.png" width="27" height="28" alt="FNF Vs. Lobotomy Dash"></a> 
+<a href="https://www.snokido.com/game/fnf-vs-matt-v3" tooltip="Vs. Matt V3 (WIP)"><img src="https://w8.snokido.com/img/fnf2/matt3.png" width="24" height="30" alt="FNF Vs. Matt V3"></a>
+<a href="https://www.snokido.com/game/fnf-italian-brainrot" tooltip="Italian Brainrot"><img src="https://w8.snokido.com/img/fnf2/sahur.png" width="26" height="31" alt="FNF Brainrot Vs. Tung Sahur & Tralalero"></a>
+<a href="https://www.snokido.com/game/fnf-vs-rewrite-sonicexe" tooltip="Rewrite V2"><img src="https://w8.snokido.com/img/fnf2/rewrite-up.png" width="31" height="28" alt="FNF Vs. Rewrite Round 2"></a>
+<a href="https://www.snokido.com/game/vs-nonsense" tooltip="Nonsense 1.5"><img src="https://w8.snokido.com/img/fnf2/nonsense-up.png" width="29" height="28" alt="FNF Vs. Nonsense"></a>
+<a href="https://www.snokido.com/game/fnf-vs-sky-reborn" tooltip="Sky Reborn"><img src="https://w8.snokido.com/img/fnf2/sky2.png" width="29" height="30" alt="FNF Vs. Sky Reborn"></a>  
+<a href="https://www.snokido.com/game/fnf-porifera-atoll-aka-lies" tooltip="Porifera Atoll"><img src="https://w8.snokido.com/img/fnf2/spongeaka.png" width="32" height="30" alt="FNF Porifera Atoll : A.K.A Lies"></a>  
+<a href="https://www.snokido.com/game/fnf-x-fnaf-night-life" tooltip2="FNAF Night Life"><img src="https://w8.snokido.com/img/fnf2/freddy.png" width="30" height="34" alt="FNF X FNAF: Night Life"></a>
+<a href="https://www.snokido.com/game/fnf-sweet-licorice" tooltip2="Sweet Licorice"><img src="https://w8.snokido.com/img/fnf2/licorice.png" width="32" height="27" alt="FNF Sweet Licorice"></a>
+<a href="https://www.snokido.com/game/friday-night-incident-vs-mr-trololo" tooltip2="Trololo V2"><img src="https://w8.snokido.com/img/fnf2/trololo.png" width="28" height="31" alt="Friday Night Incident Vs. Mr. Trololo"></a>
+<div id="mods"><div class="icon-mod"></div></div>
+</div>
+      
+      <div class="gamebar">
+        <div class="gameopt">
+          <button type="button" aria-label="Show controls" id="pad" tooltip="Show controls">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.78 30">
+              <path d="M29.4 8.7c-.2-.2-4.6-.3-8-.3L21.1.3c-.4-.4-12-.4-12.5 0-.2.2-.3 4.6-.3 8.1-3.4 0-7.9.1-8 .3-.4.4-.4 12 0 12.6.2.2 4.6.3 8 .3 0 3.4.1 8 .3 8.1.4.4 12 .4 12.5 0 .2-.2.3-4.6.3-8.1 3.4 0 7.9-.1 8-.3.5-.5.5-12.2 0-12.6z" fill="#888"/><path d="M18.7 5.9a22.29 22.29 0 0 0-4-4.1 31.08 31.08 0 0 0-4 4.1h8m-8 18.1a22.29 22.29 0 0 0 4 4.1 31.08 31.08 0 0 0 4-4.1c-2.7-.1-5.2-.1-8 0m13-5.1a22.29 22.29 0 0 0 4.1-4 31.08 31.08 0 0 0-4.1-4v8M5.7 11a22.29 22.29 0 0 0-4.1 4 31.08 31.08 0 0 0 4.1 4v-8m13.4 3.9a4.4 4.4 0 0 0-8.8 0 4.44 4.44 0 0 0 4.4 4.4 4.25 4.25 0 0 0 4.4-4.4" fill="#444"/>
+            </svg>
+            <span>Controls</span>
+          </button>
+          <button type="button" aria-label="Report a bug" class="report" tooltip="Report a bug" onclick="ShowPopup('report', '3349', 1);">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+              <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+            </svg>
+          </button>
+          <button type="button" aria-label="Add to favorites" id="logfav" tooltip="Add to favorites"><span class="icon-fav"></span></button>
+        </div>
+        <div class="gamesize">
+        <button type="button" aria-label="Fullscreen" class="resizing" tooltip="Fullscreen" id="full" onClick="ResizeFlash(1)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 815.88 559.88" shape-rendering="crispEdges">
+            <path d="M49.98 399.92H0v159.96h179.96v-50H49.98V399.92zM0 159.96h49.98V49.98h129.98V0H0v159.96zM635.92 0v49.98H765.9v109.98h50V0H635.92zM765.9 509.9H635.92v50h179.96V399.92h-50V509.9z"/>
+          </svg>
+        </button>
+        </div>
+        <div class="gamerate">
+          <button type="button" aria-label="I like this" tooltip="I like this" class="likes" id="like">
+		<span class="thumb-up"></span><span id="rate_like">45 k</span>
+	</button>
+	<button type="button" aria-label="I dislike this" tooltip="I dislike this" class="likes" id="dislike">
+		<span class="thumb-down"></span><span id="rate_dislike">6.2 k</span>
+	</button>
+	<div class="gamescore">88%</div>        </div>
+      </div>
+    </div>
+    <div class="control border">
+      <span class="key karrow"></span> &nbsp;Action&nbsp;&nbsp;&nbsp; <span class="key kenter"></span> &nbsp;Start&nbsp;&nbsp;&nbsp; <span class="key k">-</span><span class="key k">+</span> &nbsp;Volume    </div>
+    <div class="gameinfos border">
+      <div class="gameinfo">
+        <h1>FNF Vs. Sonic.Exe</h1>
+        <span class="gamemore">Developer: <span class="gameauth"> RightBurstUltra / Razencro</span>&nbsp; - &nbsp; <span class="gamehit">9 824 351</span> plays</span>
+        <p id="desc" class="gamedesc">The mod FNF Vs. Sonic.Exe for Friday Night Funkin' will offer you to face in a rap battle a mythical and legendary character, Sonic.Exe, a mysterious version of the famous blue hedgehog that raises many questions about its origin. Many theories and creepy stories (creepypasta) have sprung up about the creation of the evil version of Sonic but it's actually a fan game developed by Crimson the Bat in 2012. After impaling his friend Tails' head on a wooden stake Sonic.Exe will offer Boyfriend a song duel in a strange and gloomy atmosphere. Try to keep the pace and your concentration despite the strange events that will occur, if you manage to win the battle a surprise will await you in the main menu of the game. With this mod RightBurstUltra and his team have managed to pay a faithful tribute to the legend surrounding the character. The dark atmosphere, the game menus identical to the "original CD-rom" as well as the new songs will immerse you directly in the very special atmosphere of the universe of Sonic.exe.<br />
+Also check out other similar mods you might enjoy such as <a href="https://www.snokido.com/game/fnf-chaos-nightmare">FNF Chaos Nightmare</a> et <a href="https://www.snokido.com/game/fnf-vs-tails-exe">FNF Vs. Tails.exe</a>.<br />
+<br />
+<b>FNF Vs. Sonic.exe 2.0</b>: This major update for the mod brings many features including 7 new songs that you can discover thanks to a complete story mod divided into several acts. Face off against Sonic.exe, Beast Sonic, Tails, Knuckles and Eggman on epic songs accompanied by animated cutscenes. Full of references and nods to the world of Sonic video games will be present!<br />
+In FNF Vs. Sonic.exe V2 you will also be able to find many secrets! In the "Sound Test" menu on the home screen enter the following codes to see extras:<br />
+0-0 / 6-6 / 9-10 / 1-13 / 12-34 / 23-23 / 32-8 / 41-1  <br />
+<br />
+<b>FNF Vs. Sonic.exe 3.0 / 4.0</b>: 37 new songs have been added ! Other songs were remastered, Chaos, Faker, Milk and Too Fest. Sonic's animations have been improved and some game sprites and screens have been changed.<br />
+Too Slow Encore - You Can't Run Encore - Cycles Encore - Sunshine Encore - Soulless - Fight or Flight - Round a Bout - Personel - Fatality - Prey - Manual Blast - Hedge - My Horizon - Substantial - Forestall Desire - Malediction - Endless OG - Endeavours - Hellbent - Godspeed - Cool Party - B4cksl4sh - Relax - Bloody Stream - Confronting - Perdition - Mania - Hollow - Iron Forest - Goddess - Burning - Shocker - Cool Party - Substantial - Digitalized - Gotta Go - Final Escape.     <br />
+<br />
+<b>Credits:</b><br />
+Director, artist: <a href="https://gamebanana.com/members/1965277" target="_blank">RightBurstUltra</a><br />
+Programming : <a href="https://gamebanana.com/members/1955104" target="_blank">Razencro</a> - <a href="https://gamebanana.com/members/1895703" target="_blank">CryBit</a> / Composers: <a href="https://gamebanana.com/members/1966168" target="_blank">MarStarBro</a> - <a href="https://gamebanana.com/members/1721900" target="_blank">UpTaunt</a> <br />
+Artists : <a href="https://gamebanana.com/members/1833334" target="_blank">Comgaming_Nz</a> - <a href="https://gamebanana.com/members/1966166" target="_blank">Zekuta</a> - <a href="https://www.youtube.com/channel/UCeNrjhLGrnsFuOAUIQaBiOQ" target="_blank">ScorchVx</a> - <a href="https://twitter.com/ghostbunbun" target="_blank">GhostBunBun</a> / Charter: <a href="https://gamebanana.com/members/1808269" target="_blank">Echolocated</a><br />
+<br />
+You can download FNF Vs. Sonic.Exe from the <a href="https://gamebanana.com/mods/316022" target="_blank">Original mod</a> page.</p>        <div class="gametags">
+          <a href="https://www.snokido.com/games/fnf">FNF</a> <a href="https://www.snokido.com/games/rhythm">Rhythm</a> <a href="https://www.snokido.com/games/sonic">Sonic</a> <a href="https://www.snokido.com/games/halloween">Halloween</a> <a href="https://www.snokido.com/games/horror">Horror</a>        </div>
+      </div>
+      <div id="comgame">
+        <h2><span class="topcom">Comments</span></h2>
+        <div class="comnew">
+          <img src="/images/guest.jpg" width="60" height="60" class="comment_avatar" alt="snokies" />  <div class="comadd"><textarea name="comment" id="addcom" maxlength="800" placeholder="Post a comment about the game (English only)"></textarea></div>
+<div id="comoptions">
+<button type="button" id="login" class="darkBT login">Add a comment</button>
+  <button type="button" id="cancel" class="greyBT">Cancel</button></div>        </div>
+        <ul id="comment_list">
+          
+	  <li id="comment-1215480">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/4.jpg" data-url="seitoshi" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="seitoshi" class="proflink">Seitoshi</span></p>
+      <p class="comment_text">Just beat TT with 0 misses, all rings, and a 99.48% acc</p>
+      <p class="comments_info">9 hours ago - <span onclick="ShowPopup('report',1215480,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1214595">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/1.jpg" data-url="lucas21212" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="lucas21212" class="proflink">lucas21212</span></p>
+      <p class="comment_text">to laggy cant play</p>
+      <p class="comments_info">1 week ago - <span onclick="ShowPopup('report',1214595,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1213938">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/2.jpg" data-url="haroldthegreat" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="haroldthegreat" class="proflink">Harold-The-Great</span></p>
+      <p class="comment_text">Bro i just think this game is fire.I remember V1 like it was yesterday</p>
+      <p class="comments_info">2 weeks ago - <span onclick="ShowPopup('report',1213938,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1213711">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/63.jpg" data-url="izzard_601" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="izzard_601" class="proflink">Izzard_601</span></p>
+      <p class="comment_text">@geefunk &quot;Your awakening in kind   Sequence 3 GIVE UP YOUR MIND  Myths; all lies; manipulate And they&#039;ll blindly believe it We will bring the new world soon They shall not retrieve it Higher being, greater power Corruption, deceived Yet do not seek a doctor&#039;s help For we are but our own gods   Foolish, clueless Ruthlessly eradicate tyranny They tell a myth Put your trust in us Through the lies and deceit  Screaming with pictures; not experiencing Less is known throughout the world They know not of what they heard Answers can&#039;t be revealed There are no faces Enemy deep below There are no faces  Minds twisted; intertwined Bring back what is mine Control the world: refined Follow the instructions!!!!!!!!!!&quot;</p>
+      <p class="comments_info">2 weeks ago - <span onclick="ShowPopup('report',1213711,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1213426">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/1.jpg" data-url="geefunk1975" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="geefunk1975" class="proflink">geefunk1975</span></p>
+      <p class="comment_text">this is such a good mod and its so good in fact I might just bust :O (moaning sounds of delight) GET OUT!</p>
+      <p class="comments_info">3 weeks ago - <span onclick="ShowPopup('report',1213426,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1212982">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/83.jpg" data-url="imbot" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="imbot" class="proflink">ImBot</span></p>
+      <p class="comment_text">Finally realized Sonic in the song Chaos was putting the middle finger constantly</p>
+      <p class="comments_info">4 weeks ago - <span onclick="ShowPopup('report',1212982,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1212935">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/2.jpg" data-url="ppumpkin" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="ppumpkin" class="proflink">Ppumpkin</span></p>
+      <p class="comment_text">Shi this slaps</p>
+      <p class="comments_info">4 weeks ago - <span onclick="ShowPopup('report',1212935,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1212748">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/4.jpg" data-url="thats0ul" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="thats0ul" class="proflink">ThaTs0ul</span></p>
+      <p class="comment_text">crazy fun fr</p>
+      <p class="comments_info">1 month ago - <span onclick="ShowPopup('report',1212748,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1212682">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/4.jpg" data-url="trincherv_n0rte" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="trincherv_n0rte" class="proflink">Trincherv_N0RTE</span></p>
+      <p class="comment_text">poto xd</p>
+      <p class="comments_info">1 month ago - <span onclick="ShowPopup('report',1212682,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1212394">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/1.jpg" data-url="untrustedant" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="untrustedant" class="proflink">Untrustedant</span></p>
+      <p class="comment_text">What happened to the people who made this mod</p>
+      <p class="comments_info">1 month ago - <span onclick="ShowPopup('report',1212394,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1212298">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/4.jpg" data-url="real_baccon" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="real_baccon" class="proflink">real_baccon</span></p>
+      <p class="comment_text">this so easy......</p>
+      <p class="comments_info">1 month ago - <span onclick="ShowPopup('report',1212298,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1212275">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/3.jpg" data-url="gojitheking1954" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="gojitheking1954" class="proflink">GojiTheKing1954</span></p>
+      <p class="comment_text">@imstupidok2.0 do note spam trust</p>
+      <p class="comments_info">1 month ago - <span onclick="ShowPopup('report',1212275,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1212124">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/2.jpg" data-url="assaultrifle" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="assaultrifle" class="proflink">AssaultRifle</span></p>
+      <p class="comment_text">Okay, I got this simple explanation. Sonic.exe mod gets cancelled. Still fine still fine. THEN, Mistful Crimson. Was cancelled. Still fine but a little concerning. THEN HYPNOS MOD! YET MARIOS MADNESS LIVES! HOW THE HELL DOES THAT HAPPEN?!?!?</p>
+      <p class="comments_info">1 month ago - <span onclick="ShowPopup('report',1212124,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1211410">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/2.jpg" data-url="yt_nikosstam24" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="yt_nikosstam24" class="proflink">YT_Nikosstam24</span></p>
+      <p class="comment_text">fatality is an absolute banger just FC-ed it with 100% accuracy</p>
+      <p class="comments_info">1 month ago - <span onclick="ShowPopup('report',1211410,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1211159">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/3.jpg" data-url="night_slasher" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="night_slasher" class="proflink">Night_Slasher</span></p>
+      <p class="comment_text">call y&#039;all fix chaos it keeps crashing the browser</p>
+      <p class="comments_info">1 month ago - <span onclick="ShowPopup('report',1211159,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li>
+	  <li id="comment-1211141">
+    <div class="comment_avatar"><img src="https://www.snokido.com/images/snoki/medium/3.jpg" data-url="verynicedogecat" class="proflink" width="60" height="60" alt="snoki" /></div>
+    <div class="comment_content">
+      <p class="comment_username"><span data-url="verynicedogecat" class="proflink">verynicedogecat</span></p>
+      <p class="comment_text">Old Endless is genuinely peak</p>
+      <p class="comments_info">1 month ago - <span onclick="ShowPopup('report',1211141,2);" class="report_comment">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges">
+				<path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+			</svg>
+			</span></p>
+    </div>
+	  </li><li class="page"><span class="active hellip">&lt;</span><a href="#" class="on" onclick="CommentPage(3349, 1); return false">1</a> <a href="#" class="off" onclick="CommentPage(3349, 2); return false">2</a> <a href="#" class="off" onclick="CommentPage(3349, 3); return false">3</a> <a href="#" class="off" onclick="CommentPage(3349, 4); return false">4</a><span class="active hellip">&hellip;</span> <a href="#" class="off" onclick="CommentPage(3349, 177); return false">177</a> <a href="#" class="off arrow" onclick="CommentPage(3349, 2); return false">&gt;</a></li>        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="Rside">
+      <div class="bigsquare">
+      <!-- Game Square 1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7474256871099866"
+     data-ad-slot="6619824237"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script> 
+    </div>
+    <div class="gamesquare">
+      <!-- Game Square 2 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-7474256871099866"
+     data-ad-slot="2791521831"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>    </div>
+      <ul>
+      <li class="capsim"><a href="https://www.snokido.com/game/vs-freddy-fazbear"><img src="https://w8.snokido.com/img/fnf-fnaf1.jpg?150322" width="156" height="90" alt="FNF Vs. FNAF 1" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/13th-friday-night"><img src="https://w8.snokido.com/img/fnf-13th-friday-night.jpg" width="156" height="90" alt="FNF Vs. Jason Voorhees: 13th Friday Night Funk" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-vs-fnaf-2"><img src="https://w8.snokido.com/img/fnf-fnaf2.jpg" width="156" height="90" alt="FNF Vs. FNAF 2" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-tails-halloween"><img src="https://w8.snokido.com/img/fnf-tails-halloween.jpg" width="156" height="90" alt="FNF Tail's Halloween" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/vs-slenderman"><img src="https://w8.snokido.com/img/fnf-slenderman.jpg?151022" width="156" height="90" alt="FNF Vs. Slenderman" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-vs-rewrite-sonicexe"><img src="https://w8.snokido.com/img/fnf-rewrite-sonic.jpg" width="156" height="90" alt="FNF Vs. Rewrite (Sonic.exe)" /></a></li>      <li class="capsim"><a href="https://www.snokido.com/game/fnf-vs-marios-madness"><img src="https://w8.snokido.com/img/fnf-mario-madness.jpg?080124" width="156" height="90" alt="FNF Vs. Mario's Madness V2" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/vs-suicide-mouse"><img src="https://w8.snokido.com/img/fnf-suicide-mouse.jpg" width="156" height="90" alt="FNF Vs. Suicide Mouse" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/vs-hypnos-lullaby"><img src="https://w8.snokido.com/img/fnf-hypno-lullaby.jpg?190523" width="156" height="90" alt="FNF Vs. Hypno's Lullaby" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-spooky-mix"><img src="https://w8.snokido.com/img/fnf-spooky-mix.jpg" width="156" height="90" alt="FNF Spooky Mix" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-confronting-yourself"><img src="https://w8.snokido.com/img/fnf-confronting-yourself.jpg" width="156" height="90" alt="FNF Confronting Yourself (FF Mix)" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-confronting-yourself-final-zone"><img src="https://w8.snokido.com/img/fnf-final-zone.jpg" width="156" height="90" alt="FNF Confronting Yourself: Final Zone" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-chaos-nightmare"><img src="https://w8.snokido.com/img/fnf-chaos-nightmare.jpg" width="156" height="90" alt="FNF Chaos Nightmare (Sonic Vs. Fleetway)" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-the-basement-show"><img src="https://w8.snokido.com/img/fnf-basement-show.jpg" width="156" height="90" alt="FNF: The Basement Show (Tom & Jerry)" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-funktime-vs-huggy-wuggy"><img src="https://w8.snokido.com/img/fnf-funktime.jpg" width="156" height="90" alt="FNF Funktime Vs. Huggy Wuggy" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/vs-chara"><img src="https://w8.snokido.com/img/fnf-chara.jpg?050523" width="156" height="90" alt="FNF Vs. Chara" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-sleep-well-catnap"><img src="https://w8.snokido.com/img/fnf-sleep-well-catnap.jpg" width="156" height="90" alt="FNF Sleep Well (CatNap)" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-sonic-legacy"><img src="https://w8.snokido.com/img/fnf-sonic-legacy.jpg" width="156" height="90" alt="FNF Sonic Legacy" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-vs-tails-exe"><img src="https://w8.snokido.com/img/fnf-tails-exe.jpg?020623" width="156" height="90" alt="FNF Vs. Tails.exe" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-vs-fnaf-3"><img src="https://w8.snokido.com/img/fnf-fnaf3.jpg" width="156" height="90" alt="FNF Vs. FNAF 3" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/vs-cartoon-cat"><img src="https://w8.snokido.com/img/fnf-cartoon-cat.jpg" width="156" height="90" alt="FNF Vs. Cartoon Cat" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-vs-catnap-godsent-gaslit"><img src="https://w8.snokido.com/img/fnf-godsent-gaslit.jpg" width="156" height="90" alt="FNF Vs. CatNap: Godsent Gaslit" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-sonic-corrupted-generations"><img src="https://w8.snokido.com/img/fnf-sonic-corrupted-generations.jpg" width="156" height="90" alt="FNF Sonic Corrupted Generations" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-way-too-many-troubles"><img src="https://w8.snokido.com/img/fnf-way-too-many-troubles.jpg?260423" width="156" height="90" alt="FNF Way Too Many Troubles" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-breaker-bundle"><img src="https://w8.snokido.com/img/fnf-breaker-bundle.jpg" width="156" height="90" alt="FNF Breaker Bundle" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-vs-tails-secret-histories"><img src="https://w8.snokido.com/img/fnf-secret-histories.jpg" width="156" height="90" alt="FNF Vs. Tails: Secret Histories" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-cn-lost-episodes"><img src="https://w8.snokido.com/img/fnf-cn-lost-episodes.jpg" width="156" height="90" alt="FNF CN Lost Episodes" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-vs-catnap-project-funk"><img src="https://w8.snokido.com/img/fnf-catnap-project-funk.jpg" width="156" height="90" alt="FNF Vs. CatNap: Poppy Playtime Project Funk" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/fnf-sonic-spirits-of-hell"><img src="https://w8.snokido.com/img/fnf-spirits-of-hell.jpg" width="156" height="90" alt="FNF Spirits of Hell V2" /></a></li><li class="capsim"><a href="https://www.snokido.com/game/the-blueballs-incident"><img src="https://w8.snokido.com/img/fnf-blueballs.jpg" width="156" height="90" alt="FNF: The Blueballs Incident" /></a></li>    </ul>
+  </div>
+</div>
+</main>
+<footer id="footer">
+  <div id="copyright">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 138.16 102.68"><path d="M129.2 26.52c-6.34-1.5-18.85-2.05-22.24-1.9-.56 0-.87.2-.94.58-1.65 5-11.6 28.4-11.6 28.4s6.2-17.56 6.24-21.77c0-.6-7.5-7.16-8.1-7.2-8.85-.8-25.26 0-26.64.73-.74.34-1.62.7-1.62 2.74-.15 1.2 2.44 60.05 4.57 62.88.3.42 7.38 7.38 7.94 7.44 5 .57 17.4-15.3 17.82-27.17a152.93 152.93 0 0 1 9 22.29c.13.33 7.58 7.48 8.06 7.5 8.65.25 8.73-31.15 2.2-42.78 9.2-13.85 24.25-21.7 24.25-23.94.02-.25-8-7.58-8.94-7.8z"/><path d="M136 97.62c0 .7-.93 1.23-2.74 1.75-2.53.7-12.45 2-21.1 1.74-.48 0-.8-.16-.93-.5-1.32-4.88-6.46-17.76-9-22.3a187.88 187.88 0 0 0 .21 18.91c0 .45-.32 1.08-1.6 1.18-7.08.6-18 .94-23.08.37a1.82 1.82 0 0 1-1.3-.72c-.94-1.26-2-14.17-2.85-27.52h50.7c5.58 11.02 11.4 24.8 11.7 27.08z" fill="#b22222"/><path d="M121.48 65.33l3.13 5.9h-51l-1.75-36c0-2.06.88-2.4 1.6-2.74 1.4-.74 17.8-1.53 26.65-.73.6.05.93.3.93.87a235.27 235.27 0 0 0 .93 28.1 275 275 0 0 0 11.61-28.39c.06-.4.38-.58.93-.58 3.4-.16 15.9.38 22.25 1.9.93.22 1.4.47 1.4.72 0 2.2-7.5 17.13-16.68 30.97z" fill="#d32d2d"/><path d="M49 .34c-1.9-.5-15.8-.9-25.42 2.1C0 9 0 27.05 0 31.44 0 54.72 24.75 66.58 24.75 74.2c0 5.93-13.46 6-14.6 6s-1.7.28-1.7 1A42.59 42.59 0 0 0 10 92.72c.27 1 8.44 9.7 10 9.7 7.5 0 21.68-8.5 28.85-21.8a23.4 23.4 0 0 0 2.77-11.71c.3-7.87-5.14-15.23-6.45-17.08-2.08-3.28-4.1-6.63-4.1-8.56a7.26 7.26 0 0 1 2.18-5.33c2.9-2.7 7.7-2.16 10.47-1.9 1.05 0 1.6-.35 1.6-1 0-1.84 7.1-16 4.16-25.66C59.33 8.63 51.46 0 49 .34z"/><path d="M60.2 76.9a23.3 23.3 0 0 1-2.77 11.71c-7.16 13.3-26.47 14.06-34 14.06a15.88 15.88 0 0 1-3.41-.26 2.15 2.15 0 0 1-1.47-1.7A43.4 43.4 0 0 1 17 89.14c0-.7.57-1 1.72-1s14.76.14 14.63-7.3c.2-3.78-3-7.14-6.17-9.78l-.88-.72h33l.2.72a19.51 19.51 0 0 1 .69 5.85z" fill="#7eb406"/><path d="M63.9 43c0 .7-.53 1-1.6 1-2.76-.25-7.57-.78-10.47 1.9a7.29 7.29 0 0 0-2.17 5.33c0 1.93 2 5.28 4.08 8.56a36.46 36.46 0 0 1 5.73 11.25h-32.3c-1.45-1.22-2.9-2.28-4-3.16h0a.69.69 0 0 1-.13-.11c-.35-.32-1.1-1-1.22-1.07l-.27-.24c-12.08-10.8-12.9-21-12.9-27 0-4.38 0-22.48 23.6-29 9.62-3 23.5-2.6 25.44-2.1 1.23.22 1.92.68 2.1 1.38 2.83 9.68 4.1 31.4 4.1 33.26z" fill="#97be2f"/>
+    </svg>All Rights Reserved © 2013-2025 Snokido  </div>
+	<a href="https://www.snokido.com/contact" class="contact">Contact</a>
+  <a href="https://www.snokido.com/cgu" class="cgu">Terms of Use</a>
+  <a href="https://www.snokido.com/privacy" class="privacy">Privacy Policy</a>
+  <button type="button" aria-label="Language" class="flag">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 335.45">
+			<path d="M473.65 0H38.36A38.35 38.35 0 0 0 0 38.35V297.1a38.35 38.35 0 0 0 38.35 38.34h435.3A38.35 38.35 0 0 0 512 297.11V38.35A38.35 38.35 0 0 0 473.64 0z" fill="#41479b"/><path d="M511.47 32a38.35 38.35 0 0 0-37.81-32h-10L300.14 107.15V0h-88.28v107.15L48.32 0h-10A38.35 38.35 0 0 0 .53 32l139.78 91.58H0v88.27h140.3L.53 303.44a38.35 38.35 0 0 0 37.81 32h10L211.86 228.3v107.15h88.28V228.3l163.54 107.15h10a38.35 38.35 0 0 0 37.82-32l-139.8-91.6H512V123.6H371.7L511.47 32z" fill="#f5f5f5"/><path d="M282.48 0h-53v141.24H0v53h229.52v141.2h53V194.2H512v-53H282.48zM24.78 333l186.6-121.14h-32.43L9.22 322a38.52 38.52 0 0 0 15.57 11zm321.6-121.12H314l180.68 117.3A38.55 38.55 0 0 0 507 316.09L346.4 211.86zM4.05 21.2l157.73 102.4h32.43L15.48 7.57A38.41 38.41 0 0 0 4.05 21.2zm328.52 102.4l170-110.38A38.49 38.49 0 0 0 486.9 2.35L300.14 123.6z" fill="#ff4b55"/>
+		</svg>
+	</button>
+	<ul id="flag">
+		<li>
+			<a href="https://www.snokido.fr/jeu/vs-sonicexe" aria-label="Français">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 472 309.25">
+					<path d="M157.33 309.24H38.14C4 309.24 0 280.38 0 271.1v-233C0 30.58.8 0 38.14 0h119.2v309.24z" fill="#41479b"/><path d="M157.34,0H314.67V309.25H157.34Z" fill="#f5f5f5"/><path d="M314.67 309.24V0h119.2C470.1 0 472 30.7 472 38.14v233c0 8.18-1.1 38.14-38.14 38.14z" fill="#ff4b55"/>
+				</svg>
+				<span>Français</span>
+			</a>
+		</li>
+		<li>
+			<button type="button" aria-label="English">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 335.45">
+					<path d="M473.65 0H38.36A38.35 38.35 0 0 0 0 38.35V297.1a38.35 38.35 0 0 0 38.35 38.34h435.3A38.35 38.35 0 0 0 512 297.11V38.35A38.35 38.35 0 0 0 473.64 0z" fill="#41479b"/><path d="M511.47 32a38.35 38.35 0 0 0-37.81-32h-10L300.14 107.15V0h-88.28v107.15L48.32 0h-10A38.35 38.35 0 0 0 .53 32l139.78 91.58H0v88.27h140.3L.53 303.44a38.35 38.35 0 0 0 37.81 32h10L211.86 228.3v107.15h88.28V228.3l163.54 107.15h10a38.35 38.35 0 0 0 37.82-32l-139.8-91.6H512V123.6H371.7L511.47 32z" fill="#f5f5f5"/><path d="M282.48 0h-53v141.24H0v53h229.52v141.2h53V194.2H512v-53H282.48zM24.78 333l186.6-121.14h-32.43L9.22 322a38.52 38.52 0 0 0 15.57 11zm321.6-121.12H314l180.68 117.3A38.55 38.55 0 0 0 507 316.09L346.4 211.86zM4.05 21.2l157.73 102.4h32.43L15.48 7.57A38.41 38.41 0 0 0 4.05 21.2zm328.52 102.4l170-110.38A38.49 38.49 0 0 0 486.9 2.35L300.14 123.6z" fill="#ff4b55"/>
+				</svg>
+				<span>English</span>
+			</button>
+		</li>
+	</ul></footer>
+</body>
+</html>
