@@ -16,7 +16,7 @@
         logArea.scrollTop = logArea.scrollHeight;
     };
     
-    // Find all question types
+    // Find all question types - improved detection
     function findAllQuestions() {
         var questions = [];
         
@@ -30,40 +30,53 @@
             });
         });
         
-        // Find multiple choice questions (radio buttons)
+        // Find multiple choice questions (radio buttons) - improved grouping
         var radioGroups = {};
-        var radios = document.querySelectorAll('input[type="radio"]:not([disabled])');
-        radios.forEach(function(radio) {
-            var name = radio.name || 'unnamed_' + Math.random();
+        var radios = document.querySelectorAll('input[type="radio"]');
+        
+        radios.forEach(function(radio, index) {
+            var name = radio.name;
+            if (!name) {
+                // If no name attribute, group by closest common container
+                var container = radio.closest('form, fieldset, div[class*="question"], div[id*="question"], ol, ul');
+                name = 'group_' + (container ? Array.from(container.parentNode.children).indexOf(container) : index);
+            }
+            
             if (!radioGroups[name]) {
                 radioGroups[name] = {
                     type: 'radio',
                     name: name,
                     options: [],
-                    container: radio.closest('form, fieldset, div, section, article, main, body')
+                    container: radio.closest('form, fieldset, div, section, article, body')
                 };
             }
             radioGroups[name].options.push(radio);
         });
         
-        // Add radio groups to questions
+        // Add radio groups to questions - include single radio if it's standalone
         Object.values(radioGroups).forEach(function(group) {
-            if (group.options.length > 1) {
+            if (group.options.length >= 1) { // Changed from > 1 to >= 1
                 questions.push(group);
             }
         });
         
         // Find checkboxes (multiple answer questions)
         var checkboxGroups = {};
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]:not([disabled])');
-        checkboxes.forEach(function(checkbox) {
-            var name = checkbox.name || 'checkbox_' + Math.random();
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        
+        checkboxes.forEach(function(checkbox, index) {
+            var name = checkbox.name;
+            if (!name) {
+                var container = checkbox.closest('form, fieldset, div[class*="question"], div[id*="question"], ol, ul');
+                name = 'checkbox_group_' + (container ? Array.from(container.parentNode.children).indexOf(container) : index);
+            }
+            
             if (!checkboxGroups[name]) {
                 checkboxGroups[name] = {
                     type: 'checkbox',
                     name: name,
                     options: [],
-                    container: checkbox.closest('form, fieldset, div, section, article, main, body')
+                    container: checkbox.closest('form, fieldset, div, section, article, body')
                 };
             }
             checkboxGroups[name].options.push(checkbox);
@@ -71,7 +84,7 @@
         
         // Add checkbox groups to questions  
         Object.values(checkboxGroups).forEach(function(group) {
-            if (group.options.length > 1) {
+            if (group.options.length >= 1) { // Changed from > 1 to >= 1
                 questions.push(group);
             }
         });
@@ -89,43 +102,84 @@
         log('✅ Found ' + allQuestions.length + ' questions (text + multiple choice)', '#55FF55');
     }
     
-    // Extract question text for different types
+    // Extract question text for different types - improved for quiz platforms
     function getQuestionText(question) {
         var container = question.container;
         if (!container) return '';
         
-        var clone = container.cloneNode(true);
+        var questionText = '';
         
-        // Remove all input elements to get just the question text
-        var removeElements = clone.querySelectorAll('input, textarea, button, select');
-        removeElements.forEach(function(el) { el.remove(); });
-        
-        var text = (clone.textContent || clone.innerText || '')
-            .replace(/\s+/g, ' ')
-            .trim()
-            .replace(/^\d+\.\s*/, '')
-            .replace(/^[a-z]\)\s*/i, '')
-            .replace(/[?:.]+$/, '');
-        
-        // For multiple choice, also include the options
         if (question.type === 'radio' || question.type === 'checkbox') {
+            // For multiple choice, look for question text before the options
+            var questionElement = container.querySelector('p, h1, h2, h3, h4, h5, h6, div, span');
+            if (questionElement) {
+                // Try to find text that looks like a question
+                var allText = container.textContent || container.innerText || '';
+                var lines = allText.split('\n').map(function(line) { return line.trim(); }).filter(function(line) { return line.length > 0; });
+                
+                for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i];
+                    // Look for question-like text (contains question mark or is longer than typical option)
+                    if (line.includes('?') || (line.length > 20 && !line.match(/^\d+\.\d+/))) {
+                        questionText = line;
+                        break;
+                    }
+                }
+                
+                // If no question mark found, take the first substantial line
+                if (!questionText && lines.length > 0) {
+                    questionText = lines[0];
+                }
+            }
+            
+            // Also include the options for context
             var optionsText = [];
-            question.options.forEach(function(option) {
+            question.options.forEach(function(option, index) {
                 var label = document.querySelector('label[for="' + option.id + '"]');
                 if (!label) {
                     label = option.closest('label');
                 }
+                if (!label) {
+                    // Look for text near the radio button
+                    var nextSibling = option.nextSibling;
+                    while (nextSibling && nextSibling.nodeType !== 1) {
+                        nextSibling = nextSibling.nextSibling;
+                    }
+                    if (nextSibling) {
+                        label = nextSibling;
+                    }
+                }
+                
                 if (label) {
                     var optionText = label.textContent.replace(/\s+/g, ' ').trim();
-                    optionsText.push(optionText);
+                    // Clean up option text
+                    optionText = optionText.replace(/^[○●◯◉]\s*/, ''); // Remove bullet points
+                    optionText = optionText.replace(/^[A-Z]\.\s*/, ''); // Remove A. B. C. etc
+                    if (optionText && !optionText.match(/^(Submit|Skip|Save)/i)) {
+                        optionsText.push(optionText);
+                    }
                 }
             });
+            
             if (optionsText.length > 0) {
-                text += ' Options: ' + optionsText.join(', ');
+                questionText += ' Options: ' + optionsText.join(', ');
             }
+            
+        } else {
+            // For text inputs, get surrounding text
+            var clone = container.cloneNode(true);
+            var removeElements = clone.querySelectorAll('input, textarea, button, select');
+            removeElements.forEach(function(el) { el.remove(); });
+            
+            questionText = (clone.textContent || clone.innerText || '')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .replace(/^\d+\.\s*/, '')
+                .replace(/^[a-z]\)\s*/i, '')
+                .replace(/[?:.]+$/, '');
         }
         
-        return text.trim();
+        return questionText.trim();
     }
     
     // AI function
