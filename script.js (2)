@@ -4,7 +4,7 @@
     
     // Create UI panel
     var panel = document.createElement('div');
-    panel.innerHTML = '<div style="position:fixed;top:20px;right:20px;z-index:99999;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:20px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.3);font-family:Arial;width:320px;"><h3 style="margin:0 0 15px 0;text-align:center;">🤖 AI Quiz Solver</h3><div style="text-align:center;font-size:12px;opacity:0.8;margin-bottom:15px;">Found: <span id="qcount">0</span> questions</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px;"><button id="solve" style="background:#4CAF50;color:white;border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:bold;">🧠 Solve</button><button id="undo" style="background:#f44336;color:white;border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:bold;">↩️ Undo</button></div><div id="log" style="background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;max-height:200px;overflow-y:auto;font-size:12px;font-family:monospace;"><div style="color:#4CAF50;">🤖 AI Quiz Solver Ready!</div><div style="color:#2196F3;">🧠 Powered by Gemini AI</div></div><div style="text-align:center;margin-top:10px;"><button onclick="this.parentElement.remove();window.aiSolver=false;" style="background:#666;color:white;border:none;padding:5px 15px;border-radius:5px;cursor:pointer;font-size:11px;">✕ Close</button></div></div>';
+    panel.innerHTML = '<div style="position:fixed;top:20px;right:20px;z-index:99999;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:20px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.3);font-family:Arial;width:320px;"><h3 style="margin:0 0 15px 0;text-align:center;">🤖 AI Quiz Solver</h3><div style="text-align:center;font-size:12px;opacity:0.8;margin-bottom:15px;">Found: <span id="qcount">0</span> questions</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px;"><button id="solve" style="background:#4CAF50;color:white;border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:bold;">🧠 Solve</button><button id="undo" style="background:#f44336;color:white;border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:bold;">↩️ Undo</button></div><div id="log" style="background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;max-height:200px;overflow-y:auto;font-size:12px;font-family:monospace;"><div style="color:#4CAF50;">🤖 AI Quiz Solver Ready!</div><div style="color:#2196F3;">🧠 Handles text inputs & multiple choice</div></div><div style="text-align:center;margin-top:10px;"><button onclick="this.parentElement.remove();window.aiSolver=false;" style="background:#666;color:white;border:none;padding:5px 15px;border-radius:5px;cursor:pointer;font-size:11px;">✕ Close</button></div></div>';
     document.body.appendChild(panel);
     
     var log = function(message, color) {
@@ -16,51 +16,142 @@
         logArea.scrollTop = logArea.scrollHeight;
     };
     
-    // Find quiz inputs
-    var inputs = document.querySelectorAll('input[type="text"]:not([readonly]):not([disabled]), textarea:not([readonly]):not([disabled])');
-    document.getElementById('qcount').textContent = inputs.length;
-    var originals = [];
-    
-    if (inputs.length === 0) {
-        log('❌ No quiz inputs found', '#FF5555');
-    } else {
-        log('✅ Found ' + inputs.length + ' questions', '#55FF55');
+    // Find all question types
+    function findAllQuestions() {
+        var questions = [];
+        
+        // Find text inputs
+        var textInputs = document.querySelectorAll('input[type="text"]:not([readonly]):not([disabled]), textarea:not([readonly]):not([disabled])');
+        textInputs.forEach(function(input) {
+            questions.push({
+                type: 'text',
+                element: input,
+                container: input.closest('li, tr, td, div, form, p, label, fieldset')
+            });
+        });
+        
+        // Find multiple choice questions (radio buttons)
+        var radioGroups = {};
+        var radios = document.querySelectorAll('input[type="radio"]:not([disabled])');
+        radios.forEach(function(radio) {
+            var name = radio.name || 'unnamed_' + Math.random();
+            if (!radioGroups[name]) {
+                radioGroups[name] = {
+                    type: 'radio',
+                    name: name,
+                    options: [],
+                    container: radio.closest('form, fieldset, div, section, article, main, body')
+                };
+            }
+            radioGroups[name].options.push(radio);
+        });
+        
+        // Add radio groups to questions
+        Object.values(radioGroups).forEach(function(group) {
+            if (group.options.length > 1) {
+                questions.push(group);
+            }
+        });
+        
+        // Find checkboxes (multiple answer questions)
+        var checkboxGroups = {};
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]:not([disabled])');
+        checkboxes.forEach(function(checkbox) {
+            var name = checkbox.name || 'checkbox_' + Math.random();
+            if (!checkboxGroups[name]) {
+                checkboxGroups[name] = {
+                    type: 'checkbox',
+                    name: name,
+                    options: [],
+                    container: checkbox.closest('form, fieldset, div, section, article, main, body')
+                };
+            }
+            checkboxGroups[name].options.push(checkbox);
+        });
+        
+        // Add checkbox groups to questions  
+        Object.values(checkboxGroups).forEach(function(group) {
+            if (group.options.length > 1) {
+                questions.push(group);
+            }
+        });
+        
+        return questions;
     }
     
-    // Extract question text
-    var getQuestion = function(inp) {
-        var cont = inp.closest('li,tr,td,div,form,p,label');
-        if (!cont) return '';
-        var clone = cont.cloneNode(true);
-        var remove = clone.querySelectorAll('input,textarea,button,select');
-        remove.forEach(function(el) { el.remove(); });
-        var txt = (clone.textContent || clone.innerText || '')
+    var allQuestions = findAllQuestions();
+    document.getElementById('qcount').textContent = allQuestions.length;
+    var originals = [];
+    
+    if (allQuestions.length === 0) {
+        log('❌ No quiz questions found', '#FF5555');
+    } else {
+        log('✅ Found ' + allQuestions.length + ' questions (text + multiple choice)', '#55FF55');
+    }
+    
+    // Extract question text for different types
+    function getQuestionText(question) {
+        var container = question.container;
+        if (!container) return '';
+        
+        var clone = container.cloneNode(true);
+        
+        // Remove all input elements to get just the question text
+        var removeElements = clone.querySelectorAll('input, textarea, button, select');
+        removeElements.forEach(function(el) { el.remove(); });
+        
+        var text = (clone.textContent || clone.innerText || '')
             .replace(/\s+/g, ' ')
             .trim()
             .replace(/^\d+\.\s*/, '')
             .replace(/^[a-z]\)\s*/i, '')
             .replace(/[?:.]+$/, '');
-        return txt.trim();
-    };
+        
+        // For multiple choice, also include the options
+        if (question.type === 'radio' || question.type === 'checkbox') {
+            var optionsText = [];
+            question.options.forEach(function(option) {
+                var label = document.querySelector('label[for="' + option.id + '"]');
+                if (!label) {
+                    label = option.closest('label');
+                }
+                if (label) {
+                    var optionText = label.textContent.replace(/\s+/g, ' ').trim();
+                    optionsText.push(optionText);
+                }
+            });
+            if (optionsText.length > 0) {
+                text += ' Options: ' + optionsText.join(', ');
+            }
+        }
+        
+        return text.trim();
+    }
     
     // AI function
-    var askAI = async function(question) {
+    var askAI = async function(questionText, questionType) {
         try {
+            var prompt;
+            if (questionType === 'text') {
+                prompt = 'You are helping with a language quiz. Question: "' + questionText + '" - If this is English, translate to Spanish. If asking for Spanish/other language, provide that word. Give ONLY the answer, no explanation. For Spanish include articles like el/la when appropriate.';
+            } else {
+                prompt = 'You are helping with a quiz. Question: "' + questionText + '" - This is a multiple choice question. Look at the question and options provided. Give ONLY the correct answer text (exactly as it appears in the options), no explanation.';
+            }
+            
             var resp = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDe5EWvatqRUvJSciuqB-DoVSrB03MtKl8', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     contents: [{
-                        parts: [{
-                            text: 'You are helping with a language quiz. Question: "' + question + '" - If this is English, translate to Spanish. If asking for Spanish/other language, provide that word. Give ONLY the answer, no explanation. For Spanish include articles like el/la when appropriate.'
-                        }]
+                        parts: [{ text: prompt }]
                     }],
                     generationConfig: {
                         temperature: 0.1,
-                        maxOutputTokens: 50
+                        maxOutputTokens: 100
                     }
                 })
             });
+            
             var data = await resp.json();
             if (data.candidates && data.candidates[0] && data.candidates[0].content) {
                 return data.candidates[0].content.parts[0].text.trim()
@@ -74,6 +165,68 @@
         }
     };
     
+    // Function to handle different question types
+    function answerQuestion(question, aiAnswer) {
+        if (question.type === 'text') {
+            // Handle text input
+            originals.push({type: 'text', element: question.element, value: question.element.value});
+            question.element.value = aiAnswer;
+            question.element.dispatchEvent(new Event('input', {bubbles: true}));
+            question.element.dispatchEvent(new Event('change', {bubbles: true}));
+            return true;
+            
+        } else if (question.type === 'radio') {
+            // Handle multiple choice (radio buttons)
+            var selected = false;
+            question.options.forEach(function(option) {
+                // Save original state
+                originals.push({type: 'radio', element: option, checked: option.checked});
+                
+                // Check if this option matches the AI answer
+                var label = document.querySelector('label[for="' + option.id + '"]');
+                if (!label) {
+                    label = option.closest('label');
+                }
+                if (label) {
+                    var optionText = label.textContent.replace(/\s+/g, ' ').trim();
+                    if (optionText.toLowerCase().includes(aiAnswer.toLowerCase()) || 
+                        aiAnswer.toLowerCase().includes(optionText.toLowerCase())) {
+                        option.checked = true;
+                        option.dispatchEvent(new Event('change', {bubbles: true}));
+                        selected = true;
+                    } else {
+                        option.checked = false;
+                    }
+                }
+            });
+            return selected;
+            
+        } else if (question.type === 'checkbox') {
+            // Handle multiple answer questions (checkboxes)
+            var selected = false;
+            question.options.forEach(function(option) {
+                originals.push({type: 'checkbox', element: option, checked: option.checked});
+                
+                var label = document.querySelector('label[for="' + option.id + '"]');
+                if (!label) {
+                    label = option.closest('label');
+                }
+                if (label) {
+                    var optionText = label.textContent.replace(/\s+/g, ' ').trim();
+                    if (optionText.toLowerCase().includes(aiAnswer.toLowerCase()) || 
+                        aiAnswer.toLowerCase().includes(optionText.toLowerCase())) {
+                        option.checked = true;
+                        option.dispatchEvent(new Event('change', {bubbles: true}));
+                        selected = true;
+                    }
+                }
+            });
+            return selected;
+        }
+        
+        return false;
+    }
+    
     // Solve button
     document.getElementById('solve').onclick = async function() {
         log('🚀 Starting AI solver...', '#55FF55');
@@ -82,33 +235,40 @@
         btn.textContent = '🧠 Working...';
         var success = 0, failed = 0;
         
-        for (var i = 0; i < inputs.length; i++) {
-            var inp = inputs[i];
-            originals.push({input: inp, value: inp.value});
-            var q = getQuestion(inp);
-            if (!q || q.length < 2) {
+        for (var i = 0; i < allQuestions.length; i++) {
+            var question = allQuestions[i];
+            var questionText = getQuestionText(question);
+            
+            if (!questionText || questionText.length < 5) {
                 log('⏭️ Q' + (i + 1) + ': No text, skipping', '#FFAA00');
                 continue;
             }
-            log('🧠 Q' + (i + 1) + ': "' + q.substring(0, 40) + '"...', '#55AAFF');
-            var answer = await askAI(q);
-            inp.value = answer;
-            inp.dispatchEvent(new Event('input', {bubbles: true}));
-            inp.dispatchEvent(new Event('change', {bubbles: true}));
-            if (answer.includes('[') && answer.includes('Error')) {
-                log('❌ Q' + (i + 1) + ': ' + answer, '#FF5555');
+            
+            log('🧠 Q' + (i + 1) + ' (' + question.type + '): "' + questionText.substring(0, 50) + '"...', '#55AAFF');
+            
+            var aiAnswer = await askAI(questionText, question.type);
+            var answered = answerQuestion(question, aiAnswer);
+            
+            if (aiAnswer.includes('[') && aiAnswer.includes('Error')) {
+                log('❌ Q' + (i + 1) + ': ' + aiAnswer, '#FF5555');
+                failed++;
+            } else if (!answered) {
+                log('⚠️ Q' + (i + 1) + ': No matching option for "' + aiAnswer + '"', '#FFAA00');
                 failed++;
             } else {
-                log('✅ Q' + (i + 1) + ': ' + answer, '#55FF55');
+                log('✅ Q' + (i + 1) + ': ' + aiAnswer, '#55FF55');
                 success++;
             }
-            await new Promise(function(r) { setTimeout(r, 300); });
+            
+            await new Promise(function(r) { setTimeout(r, 400); });
         }
+        
         log('📊 Done: ' + success + ' success, ' + failed + ' failed', '#55AAFF');
-        var submit = document.querySelector('input[type="submit"], button[type="submit"]');
+        
+        var submit = document.querySelector('input[type="submit"], button[type="submit"], button[class*="submit" i], input[value*="submit" i]');
         if (submit && success > failed) {
             log('🚀 Auto-submitting...', '#55FF55');
-            setTimeout(function() { submit.click(); }, 1000);
+            setTimeout(function() { submit.click(); }, 1500);
         }
         btn.textContent = '✅ Complete';
     };
@@ -119,11 +279,18 @@
             log('ℹ️ Nothing to undo', '#FFAA00');
             return;
         }
-        originals.forEach(function(o) {
-            o.input.value = o.value;
-            o.input.dispatchEvent(new Event('input', {bubbles: true}));
-            o.input.dispatchEvent(new Event('change', {bubbles: true}));
+        
+        originals.forEach(function(orig) {
+            if (orig.type === 'text') {
+                orig.element.value = orig.value;
+                orig.element.dispatchEvent(new Event('input', {bubbles: true}));
+                orig.element.dispatchEvent(new Event('change', {bubbles: true}));
+            } else if (orig.type === 'radio' || orig.type === 'checkbox') {
+                orig.element.checked = orig.checked;
+                orig.element.dispatchEvent(new Event('change', {bubbles: true}));
+            }
         });
+        
         log('↩️ Undid ' + originals.length + ' changes', '#55FF55');
         originals = [];
         document.getElementById('solve').textContent = '🧠 Solve';
