@@ -1,0 +1,132 @@
+(function(){
+    if(window.aiSolver) return;
+    window.aiSolver = true;
+    
+    // Create UI panel
+    var panel = document.createElement('div');
+    panel.innerHTML = '<div style="position:fixed;top:20px;right:20px;z-index:99999;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:20px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.3);font-family:Arial;width:320px;"><h3 style="margin:0 0 15px 0;text-align:center;">🤖 AI Quiz Solver</h3><div style="text-align:center;font-size:12px;opacity:0.8;margin-bottom:15px;">Found: <span id="qcount">0</span> questions</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px;"><button id="solve" style="background:#4CAF50;color:white;border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:bold;">🧠 Solve</button><button id="undo" style="background:#f44336;color:white;border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:bold;">↩️ Undo</button></div><div id="log" style="background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;max-height:200px;overflow-y:auto;font-size:12px;font-family:monospace;"><div style="color:#4CAF50;">🤖 AI Quiz Solver Ready!</div><div style="color:#2196F3;">🧠 Powered by Gemini AI</div></div><div style="text-align:center;margin-top:10px;"><button onclick="this.parentElement.remove();window.aiSolver=false;" style="background:#666;color:white;border:none;padding:5px 15px;border-radius:5px;cursor:pointer;font-size:11px;">✕ Close</button></div></div>';
+    document.body.appendChild(panel);
+    
+    var log = function(message, color) {
+        var logArea = document.getElementById('log');
+        var div = document.createElement('div');
+        div.style.color = color || '#FFF';
+        div.textContent = '[' + new Date().toLocaleTimeString() + '] ' + message;
+        logArea.appendChild(div);
+        logArea.scrollTop = logArea.scrollHeight;
+    };
+    
+    // Find quiz inputs
+    var inputs = document.querySelectorAll('input[type="text"]:not([readonly]):not([disabled]), textarea:not([readonly]):not([disabled])');
+    document.getElementById('qcount').textContent = inputs.length;
+    var originals = [];
+    
+    if (inputs.length === 0) {
+        log('❌ No quiz inputs found', '#FF5555');
+    } else {
+        log('✅ Found ' + inputs.length + ' questions', '#55FF55');
+    }
+    
+    // Extract question text
+    var getQuestion = function(inp) {
+        var cont = inp.closest('li,tr,td,div,form,p,label');
+        if (!cont) return '';
+        var clone = cont.cloneNode(true);
+        var remove = clone.querySelectorAll('input,textarea,button,select');
+        remove.forEach(function(el) { el.remove(); });
+        var txt = (clone.textContent || clone.innerText || '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .replace(/^\d+\.\s*/, '')
+            .replace(/^[a-z]\)\s*/i, '')
+            .replace(/[?:.]+$/, '');
+        return txt.trim();
+    };
+    
+    // AI function
+    var askAI = async function(question) {
+        try {
+            var resp = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDe5EWvatqRUvJSciuqB-DoVSrB03MtKl8', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: 'You are helping with a language quiz. Question: "' + question + '" - If this is English, translate to Spanish. If asking for Spanish/other language, provide that word. Give ONLY the answer, no explanation. For Spanish include articles like el/la when appropriate.'
+                        }]
+                    }],
+                    generationConfig: {
+                        temperature: 0.1,
+                        maxOutputTokens: 50
+                    }
+                })
+            });
+            var data = await resp.json();
+            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                return data.candidates[0].content.parts[0].text.trim()
+                    .replace(/^(Answer:|Translation:|Result:)\s*/i, '')
+                    .replace(/['"]/g, '');
+            } else {
+                return '[AI Error]';
+            }
+        } catch (e) {
+            return '[Error: ' + e.message + ']';
+        }
+    };
+    
+    // Solve button
+    document.getElementById('solve').onclick = async function() {
+        log('🚀 Starting AI solver...', '#55FF55');
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = '🧠 Working...';
+        var success = 0, failed = 0;
+        
+        for (var i = 0; i < inputs.length; i++) {
+            var inp = inputs[i];
+            originals.push({input: inp, value: inp.value});
+            var q = getQuestion(inp);
+            if (!q || q.length < 2) {
+                log('⏭️ Q' + (i + 1) + ': No text, skipping', '#FFAA00');
+                continue;
+            }
+            log('🧠 Q' + (i + 1) + ': "' + q.substring(0, 40) + '"...', '#55AAFF');
+            var answer = await askAI(q);
+            inp.value = answer;
+            inp.dispatchEvent(new Event('input', {bubbles: true}));
+            inp.dispatchEvent(new Event('change', {bubbles: true}));
+            if (answer.includes('[') && answer.includes('Error')) {
+                log('❌ Q' + (i + 1) + ': ' + answer, '#FF5555');
+                failed++;
+            } else {
+                log('✅ Q' + (i + 1) + ': ' + answer, '#55FF55');
+                success++;
+            }
+            await new Promise(function(r) { setTimeout(r, 300); });
+        }
+        log('📊 Done: ' + success + ' success, ' + failed + ' failed', '#55AAFF');
+        var submit = document.querySelector('input[type="submit"], button[type="submit"]');
+        if (submit && success > failed) {
+            log('🚀 Auto-submitting...', '#55FF55');
+            setTimeout(function() { submit.click(); }, 1000);
+        }
+        btn.textContent = '✅ Complete';
+    };
+    
+    // Undo button
+    document.getElementById('undo').onclick = function() {
+        if (originals.length === 0) {
+            log('ℹ️ Nothing to undo', '#FFAA00');
+            return;
+        }
+        originals.forEach(function(o) {
+            o.input.value = o.value;
+            o.input.dispatchEvent(new Event('input', {bubbles: true}));
+            o.input.dispatchEvent(new Event('change', {bubbles: true}));
+        });
+        log('↩️ Undid ' + originals.length + ' changes', '#55FF55');
+        originals = [];
+        document.getElementById('solve').textContent = '🧠 Solve';
+        document.getElementById('solve').disabled = false;
+    };
+})();
