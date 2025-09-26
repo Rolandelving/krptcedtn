@@ -24,7 +24,7 @@
 
     // Gemini API Configuration
     const GEMINI_CONFIG = {
-        apiUrl: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
+        apiUrl: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
         maxTokens: 1000,
         temperature: 0.1,
         fallbackAPIs: []
