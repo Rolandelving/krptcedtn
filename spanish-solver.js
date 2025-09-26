@@ -548,29 +548,47 @@ Respond with ONLY the Spanish translation, no explanations:`;
     // Enhanced multiple choice processing with AI
     const findBestMultipleChoiceAnswer = async (questionText, choices) => {
         const cleanQuestion = questionText.toLowerCase().trim();
-        log(`🤔 AI Analyzing MC question: "${cleanQuestion}"`);
-        log(`📝 Choices: ${choices.map(c => c.text).join(' | ')}`);
+        log(`🤔 AI Analyzing MC question: "${questionText}"`);
+        log(`📝 Available choices: ${choices.map((c, i) => `${i+1}. ${c.text}`).join(' | ')}`);
         
         let bestChoice = null;
         let bestScore = 0;
         let bestReason = '';
         
-        // Method 1: AI Analysis (Gemini first)
+        // Method 1: AI Analysis (Primary method - let AI read and understand)
         if (CONFIG.useGeminiAI && CONFIG.geminiApiKey) {
             try {
-                const aiResponse = await askGeminiAI(questionText, choices, 'Spanish grammar quiz');
+                log('🤖 Asking Gemini AI to analyze question and choices...');
+                const aiResponse = await askGeminiAI(questionText, choices, 'Spanish grammar and vocabulary quiz');
                 
                 if (aiResponse) {
-                    // Parse AI response (should be a number)
-                    const choiceNumber = parseInt(aiResponse.match(/\d+/)?.[0]);
-                    if (choiceNumber && choiceNumber >= 1 && choiceNumber <= choices.length) {
-                        const selectedChoice = choices[choiceNumber - 1];
-                        log(`🤖 Gemini AI selected choice ${choiceNumber}: "${selectedChoice.text}"`);
-                        return { 
-                            choice: selectedChoice, 
-                            confidence: 0.92, 
-                            reason: 'Gemini AI analysis' 
-                        };
+                    // Parse AI response - should return a number
+                    const responseNum = aiResponse.match(/\b([1-9]|10)\b/);
+                    if (responseNum) {
+                        const choiceNumber = parseInt(responseNum[0]);
+                        if (choiceNumber >= 1 && choiceNumber <= choices.length) {
+                            const selectedChoice = choices[choiceNumber - 1];
+                            log(`🎯 AI selected choice ${choiceNumber}: "${selectedChoice.text}"`);
+                            return { 
+                                choice: selectedChoice, 
+                                confidence: 0.95, 
+                                reason: 'Gemini AI comprehension analysis' 
+                            };
+                        }
+                    }
+                    
+                    // Fallback: Try to match AI response text with choices
+                    const aiText = aiResponse.toLowerCase();
+                    for (let i = 0; i < choices.length; i++) {
+                        const choiceText = choices[i].text.toLowerCase();
+                        if (aiText.includes(choiceText) || choiceText.includes(aiText)) {
+                            log(`🎯 AI response matched choice: "${choices[i].text}"`);
+                            return {
+                                choice: choices[i],
+                                confidence: 0.9,
+                                reason: 'AI text matching'
+                            };
+                        }
                     }
                 }
             } catch (error) {
@@ -578,95 +596,331 @@ Respond with ONLY the Spanish translation, no explanations:`;
             }
         }
         
-        // Method 2: Smart conjugation analysis
-        const conjugationAnalysis = analyzeConjugation(questionText, choices);
-        if (conjugationAnalysis) {
-            const matchingChoice = choices.find(choice => 
-                choice.text.toLowerCase().includes(conjugationAnalysis.answer.toLowerCase()) ||
-                conjugationAnalysis.answer.toLowerCase().includes(choice.text.toLowerCase())
-            );
-            
-            if (matchingChoice) {
-                log(`🧠 Conjugation analysis: "${conjugationAnalysis.answer}" -> "${matchingChoice.text}"`);
-                return {
-                    choice: matchingChoice,
-                    confidence: conjugationAnalysis.confidence,
-                    reason: conjugationAnalysis.reasoning
-                };
+        // Method 2: Deep Question Analysis (Understanding what's being asked)
+        const questionAnalysis = analyzeQuestionContent(cleanQuestion, choices);
+        if (questionAnalysis && questionAnalysis.confidence > 0.7) {
+            log(`🧠 Question analysis: ${questionAnalysis.reasoning}`);
+            return questionAnalysis;
+        }
+        
+        // Method 3: Spanish Grammar Logic (Based on question type)
+        const grammarResult = analyzeGrammarQuestion(cleanQuestion, choices);
+        if (grammarResult && grammarResult.confidence > 0.6) {
+            log(`📚 Grammar analysis: ${grammarResult.reasoning}`);
+            return grammarResult;
+        }
+        
+        // Method 4: Conjugation-Specific Deep Analysis
+        if (cleanQuestion.includes('conjugat') || cleanQuestion.includes('verb') || cleanQuestion.includes('tense')) {
+            const conjugationResult = analyzeConjugationQuestion(cleanQuestion, choices);
+            if (conjugationResult) {
+                log(`🔄 Conjugation analysis: ${conjugationResult.reasoning}`);
+                return conjugationResult;
             }
         }
         
-        // Method 3: Enhanced knowledge base matching
-        for (const [key, answer] of Object.entries(dictionary)) {
-            if (cleanQuestion.includes(key.toLowerCase())) {
+        // Method 5: Translation and Vocabulary Matching
+        const vocabResult = await analyzeVocabularyQuestion(cleanQuestion, choices);
+        if (vocabResult && vocabResult.confidence > 0.5) {
+            log(`📖 Vocabulary analysis: ${vocabResult.reasoning}`);
+            return vocabResult;
+        }
+        
+        log(`❌ Could not determine correct answer for: "${questionText}"`);
+        return null;
+    };
+
+    // Deep question content analysis
+    const analyzeQuestionContent = (questionText, choices) => {
+        const question = questionText.toLowerCase();
+        
+        // Conjugation questions
+        if (question.includes('first step') && (question.includes('conjugat') || question.includes('verb'))) {
+            for (const choice of choices) {
+                const choiceText = choice.text.toLowerCase();
+                if (choiceText.includes('drop') || choiceText.includes('remove') || 
+                    choiceText.includes('take off') || choiceText.includes('ending')) {
+                    return {
+                        choice: choice,
+                        confidence: 0.95,
+                        reasoning: 'First step of conjugation is always to drop/remove the ending'
+                    };
+                }
+            }
+        }
+        
+        if (question.includes('second step') && (question.includes('conjugat') || question.includes('verb'))) {
+            for (const choice of choices) {
+                const choiceText = choice.text.toLowerCase();
+                if (choiceText.includes('add') && (choiceText.includes('ending') || choiceText.includes('suffix'))) {
+                    return {
+                        choice: choice,
+                        confidence: 0.9,
+                        reasoning: 'Second step of conjugation is to add the appropriate ending'
+                    };
+                }
+            }
+        }
+        
+        // Grammar agreement questions
+        if (question.includes('agree') || question.includes('match')) {
+            if (question.includes('article') || question.includes('el') || question.includes('la')) {
                 for (const choice of choices) {
-                    const choiceText = choice.text.toLowerCase().trim();
-                    if (choiceText.includes(answer.toLowerCase()) || 
-                        answer.toLowerCase().includes(choiceText) ||
-                        calculateSimilarity(choiceText, answer.toLowerCase()) > 0.8) {
-                        log(`✅ Dictionary match: "${key}" -> "${answer}" -> Choice: "${choice.text}"`);
-                        return { choice, confidence: 0.85, reason: `Dictionary: ${key} -> ${answer}` };
+                    const choiceText = choice.text.toLowerCase();
+                    if (choiceText.includes('gender') || choiceText.includes('number') || 
+                        choiceText.includes('masculine') || choiceText.includes('feminine')) {
+                        return {
+                            choice: choice,
+                            confidence: 0.85,
+                            reasoning: 'Articles must agree with noun gender and number'
+                        };
+                    }
+                }
+            }
+            
+            if (question.includes('adjective')) {
+                for (const choice of choices) {
+                    const choiceText = choice.text.toLowerCase();
+                    if (choiceText.includes('noun') || choiceText.includes('gender') || choiceText.includes('number')) {
+                        return {
+                            choice: choice,
+                            confidence: 0.85,
+                            reasoning: 'Adjectives must agree with the nouns they modify'
+                        };
+                    }
+                }
+            }
+            
+            if (question.includes('verb')) {
+                for (const choice of choices) {
+                    const choiceText = choice.text.toLowerCase();
+                    if (choiceText.includes('subject') || choiceText.includes('person') || choiceText.includes('number')) {
+                        return {
+                            choice: choice,
+                            confidence: 0.85,
+                            reasoning: 'Verbs must agree with their subject in person and number'
+                        };
                     }
                 }
             }
         }
         
-        // Method 4: Conjugation-specific logic
-        if (cleanQuestion.includes('first step') && cleanQuestion.includes('conjugat')) {
-            const dropEndingChoice = choices.find(choice => 
-                choice.text.toLowerCase().includes('drop') || 
-                choice.text.toLowerCase().includes('remove') ||
-                choice.text.toLowerCase().includes('ending')
-            );
+        // Ser vs Estar questions
+        if (question.includes('ser') || question.includes('estar')) {
+            if (question.includes('permanent') || question.includes('characteristic') || question.includes('identity')) {
+                for (const choice of choices) {
+                    if (choice.text.toLowerCase().includes('ser')) {
+                        return {
+                            choice: choice,
+                            confidence: 0.9,
+                            reasoning: 'Ser is used for permanent characteristics and identity'
+                        };
+                    }
+                }
+            }
             
-            if (dropEndingChoice) {
-                return { 
-                    choice: dropEndingChoice, 
-                    confidence: 0.95, 
-                    reason: 'First step of conjugation rule' 
-                };
+            if (question.includes('temporary') || question.includes('condition') || question.includes('location') || question.includes('feeling')) {
+                for (const choice of choices) {
+                    if (choice.text.toLowerCase().includes('estar')) {
+                        return {
+                            choice: choice,
+                            confidence: 0.9,
+                            reasoning: 'Estar is used for temporary conditions, feelings, and location'
+                        };
+                    }
+                }
             }
         }
         
-        // Method 5: Pattern matching with conjugation knowledge
-        for (const choice of choices) {
-            const choiceText = choice.text.toLowerCase().trim();
-            let score = 0;
-            let reasons = [];
-            
-            // Check conjugation terms
-            const conjugationTerms = ['stem', 'root', 'ending', 'infinitive', 'conjugate', 'verb'];
-            for (const term of conjugationTerms) {
-                if (choiceText.includes(term)) {
-                    score += 0.3;
-                    reasons.push(`contains ${term}`);
+        // Question word identification
+        const questionWords = {
+            'what': ['qué', 'cuál'],
+            'when': ['cuándo'],
+            'where': ['dónde', 'adónde'],
+            'who': ['quién', 'quiénes'],
+            'why': ['por qué'],
+            'how': ['cómo'],
+            'how much': ['cuánto'],
+            'how many': ['cuántos', 'cuántas']
+        };
+        
+        for (const [english, spanish] of Object.entries(questionWords)) {
+            if (question.includes(english)) {
+                for (const choice of choices) {
+                    const choiceText = choice.text.toLowerCase();
+                    if (spanish.some(sp => choiceText.includes(sp))) {
+                        return {
+                            choice: choice,
+                            confidence: 0.8,
+                            reasoning: `"${english}" translates to one of: ${spanish.join(', ')}`
+                        };
+                    }
                 }
-            }
-            
-            // Grammar rule scoring
-            if (cleanQuestion.includes('agree') || cleanQuestion.includes('match')) {
-                if (choiceText.includes('gender') || choiceText.includes('number') || 
-                    choiceText.includes('noun') || choiceText.includes('subject')) {
-                    score += 0.4;
-                    reasons.push('agreement rule');
-                }
-            }
-            
-            // Verb tense scoring
-            if (cleanQuestion.includes('tense') || cleanQuestion.includes('time')) {
-                if (choiceText.includes('present') || choiceText.includes('past') || 
-                    choiceText.includes('future') || choiceText.includes('preterite')) {
-                    score += 0.3;
-                    reasons.push('tense identification');
-                }
-            }
-            
-            if (score > bestScore) {
-                bestChoice = choice;
-                bestScore = score;
-                bestReason = reasons.join(', ');
             }
         }
+        
+        return null;
+    };
+
+    // Grammar-specific question analysis
+    const analyzeGrammarQuestion = (questionText, choices) => {
+        const question = questionText.toLowerCase();
+        
+        // Definite/indefinite articles
+        if (question.includes('definite article')) {
+            for (const choice of choices) {
+                const choiceText = choice.text.toLowerCase();
+                if (choiceText.includes('el') || choiceText.includes('la') || 
+                    choiceText.includes('los') || choiceText.includes('las')) {
+                    return {
+                        choice: choice,
+                        confidence: 0.9,
+                        reasoning: 'Definite articles are el, la, los, las'
+                    };
+                }
+            }
+        }
+        
+        if (question.includes('indefinite article')) {
+            for (const choice of choices) {
+                const choiceText = choice.text.toLowerCase();
+                if (choiceText.includes('un') || choiceText.includes('una') || 
+                    choiceText.includes('unos') || choiceText.includes('unas')) {
+                    return {
+                        choice: choice,
+                        confidence: 0.9,
+                        reasoning: 'Indefinite articles are un, una, unos, unas'
+                    };
+                }
+            }
+        }
+        
+        // Masculine vs Feminine
+        if (question.includes('masculine')) {
+            for (const choice of choices) {
+                const choiceText = choice.text.toLowerCase();
+                if (choiceText.includes('el') || choiceText.includes('los') || 
+                    choiceText.includes('un') || choiceText.includes('unos') ||
+                    choiceText.endsWith('o') || choiceText.includes('-o')) {
+                    return {
+                        choice: choice,
+                        confidence: 0.8,
+                        reasoning: 'Masculine nouns typically use el/los/un/unos and often end in -o'
+                    };
+                }
+            }
+        }
+        
+        if (question.includes('feminine')) {
+            for (const choice of choices) {
+                const choiceText = choice.text.toLowerCase();
+                if (choiceText.includes('la') || choiceText.includes('las') || 
+                    choiceText.includes('una') || choiceText.includes('unas') ||
+                    choiceText.endsWith('a') || choiceText.includes('-a')) {
+                    return {
+                        choice: choice,
+                        confidence: 0.8,
+                        reasoning: 'Feminine nouns typically use la/las/una/unas and often end in -a'
+                    };
+                }
+            }
+        }
+        
+        return null;
+    };
+
+    // Enhanced conjugation question analysis
+    const analyzeConjugationQuestion = (questionText, choices) => {
+        const question = questionText.toLowerCase();
+        
+        // Infinitive identification
+        if (question.includes('infinitive')) {
+            for (const choice of choices) {
+                const choiceText = choice.text.toLowerCase();
+                if (choiceText.endsWith('ar') || choiceText.endsWith('er') || choiceText.endsWith('ir')) {
+                    return {
+                        choice: choice,
+                        confidence: 0.95,
+                        reasoning: 'Infinitives end in -ar, -er, or -ir'
+                    };
+                }
+            }
+        }
+        
+        // Tense identification
+        if (question.includes('present tense') || question.includes('presente')) {
+            // Look for present tense conjugations
+            for (const choice of choices) {
+                const choiceText = choice.text.toLowerCase().trim();
+                // Common present tense patterns
+                if (choiceText.match(/^(soy|eres|es|somos|son|tengo|tienes|tiene|tenemos|tienen)$/) ||
+                    choiceText.match(/o$|as$|a$|amos$|áis$|an$|es$|e$|emos$|éis$|en$|is$|ís$/)) {
+                    return {
+                        choice: choice,
+                        confidence: 0.75,
+                        reasoning: 'Present tense conjugation pattern detected'
+                    };
+                }
+            }
+        }
+        
+        if (question.includes('preterite') || question.includes('past')) {
+            // Look for preterite tense conjugations
+            for (const choice of choices) {
+                const choiceText = choice.text.toLowerCase().trim();
+                if (choiceText.match(/é$|aste$|ó$|amos$|asteis$|aron$|í$|iste$|ió$|imos$|isteis$|ieron$/)) {
+                    return {
+                        choice: choice,
+                        confidence: 0.75,
+                        reasoning: 'Preterite tense conjugation pattern detected'
+                    };
+                }
+            }
+        }
+        
+        return analyzeConjugation(questionText, choices);
+    };
+
+    // Vocabulary and translation analysis
+    const analyzeVocabularyQuestion = async (questionText, choices) => {
+        const question = questionText.toLowerCase();
+        
+        // Direct translation questions
+        for (const [english, spanish] of Object.entries(dictionary)) {
+            if (question.includes(english.toLowerCase())) {
+                for (const choice of choices) {
+                    const choiceText = choice.text.toLowerCase();
+                    if (choiceText.includes(spanish.toLowerCase()) || 
+                        spanish.toLowerCase().includes(choiceText) ||
+                        calculateSimilarity(choiceText, spanish.toLowerCase()) > 0.8) {
+                        return {
+                            choice: choice,
+                            confidence: 0.9,
+                            reasoning: `Dictionary match: "${english}" → "${spanish}"`
+                        };
+                    }
+                }
+            }
+        }
+        
+        // School vocabulary questions
+        if (question.includes('school') || question.includes('class') || question.includes('student')) {
+            for (const choice of choices) {
+                const choiceText = choice.text.toLowerCase();
+                // Check if choice contains school-related vocabulary
+                const schoolWords = ['escuela', 'colegio', 'clase', 'estudiante', 'maestro', 'profesor', 'aula', 'biblioteca', 'cafetería'];
+                if (schoolWords.some(word => choiceText.includes(word))) {
+                    return {
+                        choice: choice,
+                        confidence: 0.7,
+                        reasoning: 'School-related vocabulary match'
+                    };
+                }
+            }
+        }
+        
+        return null;
+    };
         
         // Method 6: Fallback to longest/most descriptive answer
         if (!bestChoice || bestScore < 0.3) {
@@ -867,11 +1121,11 @@ Respond with ONLY the Spanish translation, no explanations:`;
         return null;
     };
 
-    // Enhanced question detection
+    // Enhanced question detection for Quia.com format
     const findMultipleChoiceQuestions = () => {
         const mcQuestions = [];
         
-        // Look for radio button groups
+        // Method 1: Look for radio button groups (standard approach)
         const radioButtons = document.querySelectorAll('input[type="radio"]');
         const radioGroups = {};
         
@@ -884,15 +1138,93 @@ Respond with ONLY the Spanish translation, no explanations:`;
             radioGroups[name].push(radio);
         });
         
-        // Process each radio group
+        // Method 2: Specific Quia.com detection - look for <li> elements with tables
+        const quiaQuestions = document.querySelectorAll('li');
+        quiaQuestions.forEach(li => {
+            const table = li.querySelector('table');
+            const radiosInTable = li.querySelectorAll('input[type="radio"]');
+            
+            if (table && radiosInTable.length > 0) {
+                // Extract question text from the li element before the table
+                let questionText = '';
+                const textNodes = [];
+                const walker = document.createTreeWalker(
+                    li,
+                    NodeFilter.SHOW_TEXT,
+                    {
+                        acceptNode: function(node) {
+                            // Skip text inside table (that's the choices)
+                            if (node.parentElement.closest('table')) {
+                                return NodeFilter.FILTER_REJECT;
+                            }
+                            return NodeFilter.FILTER_ACCEPT;
+                        }
+                    }
+                );
+                
+                let node;
+                while (node = walker.nextNode()) {
+                    textNodes.push(node.textContent.trim());
+                }
+                
+                questionText = textNodes.join(' ').replace(/\s+/g, ' ').trim();
+                
+                // Extract choices from table rows
+                const choices = [];
+                const tableRows = table.querySelectorAll('tr');
+                
+                tableRows.forEach(row => {
+                    const radio = row.querySelector('input[type="radio"]');
+                    const textCell = row.querySelector('td:not(:has(input))'); // Cell without radio button
+                    
+                    if (radio && textCell) {
+                        const choiceText = textCell.textContent.trim();
+                        if (choiceText) {
+                            choices.push({
+                                radio: radio,
+                                text: choiceText,
+                                value: radio.value
+                            });
+                        }
+                    }
+                });
+                
+                if (questionText && choices.length > 1) {
+                    const groupName = radiosInTable[0].name;
+                    
+                    // Check if we already processed this group
+                    const alreadyExists = mcQuestions.some(q => q.groupName === groupName);
+                    if (!alreadyExists) {
+                        mcQuestions.push({
+                            type: 'multiple_choice',
+                            groupName: groupName,
+                            radios: Array.from(radiosInTable),
+                            choices: choices,
+                            questionText: questionText,
+                            container: li,
+                            format: 'quia_table'
+                        });
+                        
+                        log(`📋 Found Quia question: "${questionText}" with ${choices.length} choices`);
+                    }
+                }
+            }
+        });
+        
+        // Method 3: Fallback - process remaining radio groups not caught by Quia detection
         Object.entries(radioGroups).forEach(([groupName, radios]) => {
+            // Skip if already processed by Quia detection
+            const alreadyExists = mcQuestions.some(q => q.groupName === groupName);
+            if (alreadyExists) return;
+            
             const question = {
                 type: 'multiple_choice',
                 groupName,
                 radios,
                 choices: [],
                 questionText: '',
-                container: null
+                container: null,
+                format: 'standard'
             };
             
             // Find the question container
@@ -903,7 +1235,7 @@ Respond with ONLY the Spanish translation, no explanations:`;
             // Extract question text
             if (container) {
                 const clone = container.cloneNode(true);
-                clone.querySelectorAll('input, button').forEach(el => el.remove());
+                clone.querySelectorAll('input, button, table').forEach(el => el.remove());
                 question.questionText = clone.textContent.replace(/\s+/g, ' ').trim();
             }
             
@@ -915,11 +1247,13 @@ Respond with ONLY the Spanish translation, no explanations:`;
                     clone.querySelectorAll('input').forEach(el => el.remove());
                     const choiceText = clone.textContent.replace(/\s+/g, ' ').trim();
                     
-                    question.choices.push({
-                        radio,
-                        text: choiceText,
-                        value: radio.value
-                    });
+                    if (choiceText) {
+                        question.choices.push({
+                            radio,
+                            text: choiceText,
+                            value: radio.value
+                        });
+                    }
                 }
             });
             
@@ -928,7 +1262,7 @@ Respond with ONLY the Spanish translation, no explanations:`;
             }
         });
         
-        log(`🔍 Found ${mcQuestions.length} multiple choice questions`);
+        log(`🔍 Found ${mcQuestions.length} multiple choice questions total`);
         return mcQuestions;
     };
 
