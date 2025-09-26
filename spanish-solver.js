@@ -17,7 +17,7 @@
         mcConfidenceThreshold: 0.7,
         useGeminiAI: true,
         useBackupAPIs: true,
-        geminiApiKey: 'AIzaSyBK7cVBxGN1F4-8cHQ2x_Rt3zW9-kL5M3P', // Your API key embedded directly
+        geminiApiKey: 'AIzaSyBK7cVBxGN1F4-8cHQ2x_Rt3zW9-kL5M3P', // Replace with your actual API key
         enableSmartConjugation: true,
         enableContextAnalysis: true
     };
@@ -26,19 +26,7 @@
     const GEMINI_CONFIG = {
         apiUrl: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
         maxTokens: 1000,
-        temperature: 0.1,
-        fallbackAPIs: []
-    };
-
-    // Load from GitHub script - no CORS issues since it's JavaScript execution
-    const loadFromGitHubScript = () => {
-        // API key is already embedded in CONFIG above
-        // This method completely bypasses CORS since we're not fetching, we're executing
-        if (CONFIG.geminiApiKey && CONFIG.geminiApiKey.length > 20) {
-            log('✅ API key loaded from embedded script');
-            return true;
-        }
-        return false;
+        temperature: 0.1
     };
 
     // Comprehensive Spanish Conjugation Knowledge Base
@@ -74,38 +62,6 @@
             }
         },
         
-        // Preterite tense endings
-        preteriteTense: {
-            "ar": {
-                "yo": "é", "tú": "aste", "él/ella/usted": "ó",
-                "nosotros": "amos", "vosotros": "asteis", "ellos/ellas/ustedes": "aron"
-            },
-            "er": {
-                "yo": "í", "tú": "iste", "él/ella/usted": "ió",
-                "nosotros": "imos", "vosotros": "isteis", "ellos/ellas/ustedes": "ieron"
-            },
-            "ir": {
-                "yo": "í", "tú": "iste", "él/ella/usted": "ió",
-                "nosotros": "imos", "vosotros": "isteis", "ellos/ellas/ustedes": "ieron"
-            }
-        },
-        
-        // Imperfect tense endings
-        imperfectTense: {
-            "ar": {
-                "yo": "aba", "tú": "abas", "él/ella/usted": "aba",
-                "nosotros": "ábamos", "vosotros": "abais", "ellos/ellas/ustedes": "aban"
-            },
-            "er": {
-                "yo": "ía", "tú": "ías", "él/ella/usted": "ía",
-                "nosotros": "íamos", "vosotros": "íais", "ellos/ellas/ustedes": "ían"
-            },
-            "ir": {
-                "yo": "ía", "tú": "ías", "él/ella/usted": "ía",
-                "nosotros": "íamos", "vosotros": "íais", "ellos/ellas/ustedes": "ían"
-            }
-        },
-        
         // Irregular verbs
         irregularVerbs: {
             "ser": {
@@ -132,31 +88,6 @@
                 present: ["voy", "vas", "va", "vamos", "vais", "van"],
                 preterite: ["fui", "fuiste", "fue", "fuimos", "fuisteis", "fueron"],
                 imperfect: ["iba", "ibas", "iba", "íbamos", "ibais", "iban"]
-            },
-            "poder": {
-                present: ["puedo", "puedes", "puede", "podemos", "podéis", "pueden"],
-                preterite: ["pude", "pudiste", "pudo", "pudimos", "pudisteis", "pudieron"],
-                imperfect: ["podía", "podías", "podía", "podíamos", "podíais", "podían"]
-            },
-            "querer": {
-                present: ["quiero", "quieres", "quiere", "queremos", "queréis", "quieren"],
-                preterite: ["quise", "quisiste", "quiso", "quisimos", "quisisteis", "quisieron"],
-                imperfect: ["quería", "querías", "quería", "queríamos", "queríais", "querían"]
-            },
-            "decir": {
-                present: ["digo", "dices", "dice", "decimos", "decís", "dicen"],
-                preterite: ["dije", "dijiste", "dijo", "dijimos", "dijisteis", "dijeron"],
-                imperfect: ["decía", "decías", "decía", "decíamos", "decíais", "decían"]
-            },
-            "venir": {
-                present: ["vengo", "vienes", "viene", "venimos", "venís", "vienen"],
-                preterite: ["vine", "viniste", "vino", "vinimos", "vinisteis", "vinieron"],
-                imperfect: ["venía", "venías", "venía", "veníamos", "veníais", "venían"]
-            },
-            "dar": {
-                present: ["doy", "das", "da", "damos", "dais", "dan"],
-                preterite: ["di", "diste", "dio", "dimos", "disteis", "dieron"],
-                imperfect: ["daba", "dabas", "daba", "dábamos", "dabais", "daban"]
             }
         },
         
@@ -165,15 +96,6 @@
             "e-ie": ["pensar", "comenzar", "empezar", "cerrar", "perder", "entender", "querer", "preferir"],
             "o-ue": ["dormir", "morir", "contar", "encontrar", "volver", "poder", "mostrar"],
             "e-i": ["pedir", "servir", "repetir", "seguir", "vestir", "conseguir"]
-        },
-        
-        // Grammar rules
-        grammarRules: {
-            articleAgreement: "Articles must agree with noun gender and number",
-            adjectiveAgreement: "Adjectives must agree with noun gender and number",
-            verbSubjectAgreement: "Verbs must agree with subject person and number",
-            serVsEstar: "Ser for permanent traits, Estar for temporary states",
-            porVsPara: "Por for through/by/for duration, Para for destination/purpose/deadline"
         }
     };
 
@@ -194,9 +116,6 @@
         "future tense": "tiempo futuro",
         "conditional": "condicional",
         "subjunctive": "subjuntivo",
-        "imperative": "imperativo",
-        "gerund": "gerundio",
-        "past participle": "participio pasado",
         
         // Subject pronouns
         "I": "yo",
@@ -220,7 +139,7 @@
         "how much": "cuánto",
         "how many": "cuántos",
         
-        // Common verbs and their meanings
+        // Common verbs
         "to be": "ser/estar",
         "to have": "tener",
         "to do": "hacer",
@@ -233,14 +152,8 @@
         "to can": "poder",
         "to give": "dar",
         "to take": "tomar",
-        "to get": "obtener",
         "to make": "hacer",
         "to think": "pensar",
-        "to feel": "sentir",
-        "to look": "mirar",
-        "to find": "encontrar",
-        "to tell": "decir",
-        "to ask": "preguntar",
         "to work": "trabajar",
         "to live": "vivir",
         "to love": "amar",
@@ -260,30 +173,6 @@
         "to walk": "caminar",
         "to run": "correr",
         "to play": "jugar",
-        "to buy": "comprar",
-        "to sell": "vender",
-        "to open": "abrir",
-        "to close": "cerrar",
-        "to start": "empezar",
-        "to finish": "terminar",
-        "to continue": "continuar",
-        "to stop": "parar",
-        "to wait": "esperar",
-        "to remember": "recordar",
-        "to forget": "olvidar",
-        "to understand": "entender",
-        "to explain": "explicar",
-        "to answer": "responder",
-        "to call": "llamar",
-        "to arrive": "llegar",
-        "to leave": "salir",
-        "to return": "volver",
-        "to travel": "viajar",
-        "to visit": "visitar",
-        "to clean": "limpiar",
-        "to cook": "cocinar",
-        "to dance": "bailar",
-        "to sing": "cantar",
         
         // Multiple choice specific answers
         "first step to conjugation": "drop the ending",
@@ -296,10 +185,6 @@
         "add the new ending": "add the new ending",
         "add new ending": "add the new ending",
         "attach the ending": "add the new ending",
-        "check for irregulars": "check for irregulars",
-        "look for irregular verbs": "check for irregulars",
-        "verify agreement": "verify agreement",
-        "ensure agreement": "verify agreement",
         
         // Core Phrases and Questions
         "I have": "Tengo",
@@ -457,41 +342,8 @@ Respond with ONLY the Spanish translation, no explanations:`;
 
         } catch (error) {
             log('❌ Gemini AI error:', error.message);
-            
-            // Try backup APIs if available
-            if (CONFIG.useBackupAPIs) {
-                return await tryBackupAPIs(question, choices, context);
-            }
-            
             return null;
         }
-    };
-
-    // Backup AI APIs
-    const tryBackupAPIs = async (question, choices, context) => {
-        const backupAPIs = [
-            // Add other AI APIs here as fallbacks
-            async () => {
-                // OpenAI GPT fallback (if API key available)
-                return await askOpenAI(question, choices, context);
-            },
-            async () => {
-                // Free translation APIs
-                return await translateWithFreeAPI(question);
-            }
-        ];
-
-        for (const apiFunc of backupAPIs) {
-            try {
-                const result = await apiFunc();
-                if (result) return result;
-            } catch (error) {
-                log('❌ Backup API failed:', error.message);
-                continue;
-            }
-        }
-
-        return null;
     };
 
     // Smart conjugation analysis
@@ -533,101 +385,43 @@ Respond with ONLY the Spanish translation, no explanations:`;
         return null;
     };
 
-    // Simple visual feedback
-    const showVisualFeedback = (element, success, answer = '') => {
-        if (!CONFIG.enableVisualFeedback) return;
+    // String similarity function
+    const calculateSimilarity = (str1, str2) => {
+        const longer = str1.length > str2.length ? str1 : str2;
+        const shorter = str1.length > str2.length ? str2 : str1;
         
-        element.style.border = success ? '2px solid green' : '2px solid orange';
-        if (answer) element.title = answer;
+        if (longer.length === 0) return 1.0;
         
-        setTimeout(() => {
-            element.style.border = '';
-        }, 2000);
+        const editDistance = levenshteinDistance(longer, shorter);
+        return (longer.length - editDistance) / longer.length;
     };
 
-    // Enhanced multiple choice processing with AI
-    const findBestMultipleChoiceAnswer = async (questionText, choices) => {
-        const cleanQuestion = questionText.toLowerCase().trim();
-        log(`🤔 AI Analyzing MC question: "${questionText}"`);
-        log(`📝 Available choices: ${choices.map((c, i) => `${i+1}. ${c.text}`).join(' | ')}`);
+    const levenshteinDistance = (str1, str2) => {
+        const matrix = [];
         
-        let bestChoice = null;
-        let bestScore = 0;
-        let bestReason = '';
+        for (let i = 0; i <= str2.length; i++) {
+            matrix[i] = [i];
+        }
         
-        // Method 1: AI Analysis (Primary method - let AI read and understand)
-        if (CONFIG.useGeminiAI && CONFIG.geminiApiKey) {
-            try {
-                log('🤖 Asking Gemini AI to analyze question and choices...');
-                const aiResponse = await askGeminiAI(questionText, choices, 'Spanish grammar and vocabulary quiz');
-                
-                if (aiResponse) {
-                    // Parse AI response - should return a number
-                    const responseNum = aiResponse.match(/\b([1-9]|10)\b/);
-                    if (responseNum) {
-                        const choiceNumber = parseInt(responseNum[0]);
-                        if (choiceNumber >= 1 && choiceNumber <= choices.length) {
-                            const selectedChoice = choices[choiceNumber - 1];
-                            log(`🎯 AI selected choice ${choiceNumber}: "${selectedChoice.text}"`);
-                            return { 
-                                choice: selectedChoice, 
-                                confidence: 0.95, 
-                                reason: 'Gemini AI comprehension analysis' 
-                            };
-                        }
-                    }
-                    
-                    // Fallback: Try to match AI response text with choices
-                    const aiText = aiResponse.toLowerCase();
-                    for (let i = 0; i < choices.length; i++) {
-                        const choiceText = choices[i].text.toLowerCase();
-                        if (aiText.includes(choiceText) || choiceText.includes(aiText)) {
-                            log(`🎯 AI response matched choice: "${choices[i].text}"`);
-                            return {
-                                choice: choices[i],
-                                confidence: 0.9,
-                                reason: 'AI text matching'
-                            };
-                        }
-                    }
+        for (let j = 0; j <= str1.length; j++) {
+            matrix[0][j] = j;
+        }
+        
+        for (let i = 1; i <= str2.length; i++) {
+            for (let j = 1; j <= str1.length; j++) {
+                if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                } else {
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j - 1] + 1,
+                        matrix[i][j - 1] + 1,
+                        matrix[i - 1][j] + 1
+                    );
                 }
-            } catch (error) {
-                log('❌ AI analysis failed:', error.message);
             }
         }
         
-        // Method 2: Deep Question Analysis (Understanding what's being asked)
-        const questionAnalysis = analyzeQuestionContent(cleanQuestion, choices);
-        if (questionAnalysis && questionAnalysis.confidence > 0.7) {
-            log(`🧠 Question analysis: ${questionAnalysis.reasoning}`);
-            return questionAnalysis;
-        }
-        
-        // Method 3: Spanish Grammar Logic (Based on question type)
-        const grammarResult = analyzeGrammarQuestion(cleanQuestion, choices);
-        if (grammarResult && grammarResult.confidence > 0.6) {
-            log(`📚 Grammar analysis: ${grammarResult.reasoning}`);
-            return grammarResult;
-        }
-        
-        // Method 4: Conjugation-Specific Deep Analysis
-        if (cleanQuestion.includes('conjugat') || cleanQuestion.includes('verb') || cleanQuestion.includes('tense')) {
-            const conjugationResult = analyzeConjugationQuestion(cleanQuestion, choices);
-            if (conjugationResult) {
-                log(`🔄 Conjugation analysis: ${conjugationResult.reasoning}`);
-                return conjugationResult;
-            }
-        }
-        
-        // Method 5: Translation and Vocabulary Matching
-        const vocabResult = await analyzeVocabularyQuestion(cleanQuestion, choices);
-        if (vocabResult && vocabResult.confidence > 0.5) {
-            log(`📖 Vocabulary analysis: ${vocabResult.reasoning}`);
-            return vocabResult;
-        }
-        
-        log(`❌ Could not determine correct answer for: "${questionText}"`);
-        return null;
+        return matrix[str2.length][str1.length];
     };
 
     // Deep question content analysis
@@ -732,253 +526,80 @@ Respond with ONLY the Spanish translation, no explanations:`;
             }
         }
         
-        // Question word identification
-        const questionWords = {
-            'what': ['qué', 'cuál'],
-            'when': ['cuándo'],
-            'where': ['dónde', 'adónde'],
-            'who': ['quién', 'quiénes'],
-            'why': ['por qué'],
-            'how': ['cómo'],
-            'how much': ['cuánto'],
-            'how many': ['cuántos', 'cuántas']
-        };
+        return null;
+    };
+
+    // Enhanced multiple choice processing with AI
+    const findBestMultipleChoiceAnswer = async (questionText, choices) => {
+        const cleanQuestion = questionText.toLowerCase().trim();
+        log(`🤔 AI Analyzing MC question: "${questionText}"`);
+        log(`📝 Available choices: ${choices.map((c, i) => `${i+1}. ${c.text}`).join(' | ')}`);
         
-        for (const [english, spanish] of Object.entries(questionWords)) {
-            if (question.includes(english)) {
+        // Method 1: AI Analysis (Primary method)
+        if (CONFIG.useGeminiAI && CONFIG.geminiApiKey) {
+            try {
+                log('🤖 Asking Gemini AI to analyze question and choices...');
+                const aiResponse = await askGeminiAI(questionText, choices, 'Spanish grammar and vocabulary quiz');
+                
+                if (aiResponse) {
+                    // Parse AI response - should return a number
+                    const responseNum = aiResponse.match(/\b([1-9]|10)\b/);
+                    if (responseNum) {
+                        const choiceNumber = parseInt(responseNum[0]);
+                        if (choiceNumber >= 1 && choiceNumber <= choices.length) {
+                            const selectedChoice = choices[choiceNumber - 1];
+                            log(`🎯 AI selected choice ${choiceNumber}: "${selectedChoice.text}"`);
+                            return { 
+                                choice: selectedChoice, 
+                                confidence: 0.95, 
+                                reason: 'Gemini AI comprehension analysis' 
+                            };
+                        }
+                    }
+                    
+                    // Fallback: Try to match AI response text with choices
+                    const aiText = aiResponse.toLowerCase();
+                    for (let i = 0; i < choices.length; i++) {
+                        const choiceText = choices[i].text.toLowerCase();
+                        if (aiText.includes(choiceText) || choiceText.includes(aiText)) {
+                            log(`🎯 AI response matched choice: "${choices[i].text}"`);
+                            return {
+                                choice: choices[i],
+                                confidence: 0.9,
+                                reason: 'AI text matching'
+                            };
+                        }
+                    }
+                }
+            } catch (error) {
+                log('❌ AI analysis failed:', error.message);
+            }
+        }
+        
+        // Method 2: Deep Question Analysis
+        const questionAnalysis = analyzeQuestionContent(cleanQuestion, choices);
+        if (questionAnalysis && questionAnalysis.confidence > 0.7) {
+            log(`🧠 Question analysis: ${questionAnalysis.reasoning}`);
+            return questionAnalysis;
+        }
+        
+        // Method 3: Dictionary matching
+        for (const [key, answer] of Object.entries(dictionary)) {
+            if (cleanQuestion.includes(key.toLowerCase())) {
                 for (const choice of choices) {
-                    const choiceText = choice.text.toLowerCase();
-                    if (spanish.some(sp => choiceText.includes(sp))) {
-                        return {
-                            choice: choice,
-                            confidence: 0.8,
-                            reasoning: `"${english}" translates to one of: ${spanish.join(', ')}`
-                        };
+                    const choiceText = choice.text.toLowerCase().trim();
+                    if (choiceText.includes(answer.toLowerCase()) || 
+                        answer.toLowerCase().includes(choiceText) ||
+                        calculateSimilarity(choiceText, answer.toLowerCase()) > 0.8) {
+                        log(`✅ Dictionary match: "${key}" -> "${answer}" -> Choice: "${choice.text}"`);
+                        return { choice, confidence: 0.85, reason: `Dictionary: ${key} -> ${answer}` };
                     }
                 }
             }
         }
         
+        log(`❌ Could not determine correct answer for: "${questionText}"`);
         return null;
-    };
-
-    // Grammar-specific question analysis
-    const analyzeGrammarQuestion = (questionText, choices) => {
-        const question = questionText.toLowerCase();
-        
-        // Definite/indefinite articles
-        if (question.includes('definite article')) {
-            for (const choice of choices) {
-                const choiceText = choice.text.toLowerCase();
-                if (choiceText.includes('el') || choiceText.includes('la') || 
-                    choiceText.includes('los') || choiceText.includes('las')) {
-                    return {
-                        choice: choice,
-                        confidence: 0.9,
-                        reasoning: 'Definite articles are el, la, los, las'
-                    };
-                }
-            }
-        }
-        
-        if (question.includes('indefinite article')) {
-            for (const choice of choices) {
-                const choiceText = choice.text.toLowerCase();
-                if (choiceText.includes('un') || choiceText.includes('una') || 
-                    choiceText.includes('unos') || choiceText.includes('unas')) {
-                    return {
-                        choice: choice,
-                        confidence: 0.9,
-                        reasoning: 'Indefinite articles are un, una, unos, unas'
-                    };
-                }
-            }
-        }
-        
-        // Masculine vs Feminine
-        if (question.includes('masculine')) {
-            for (const choice of choices) {
-                const choiceText = choice.text.toLowerCase();
-                if (choiceText.includes('el') || choiceText.includes('los') || 
-                    choiceText.includes('un') || choiceText.includes('unos') ||
-                    choiceText.endsWith('o') || choiceText.includes('-o')) {
-                    return {
-                        choice: choice,
-                        confidence: 0.8,
-                        reasoning: 'Masculine nouns typically use el/los/un/unos and often end in -o'
-                    };
-                }
-            }
-        }
-        
-        if (question.includes('feminine')) {
-            for (const choice of choices) {
-                const choiceText = choice.text.toLowerCase();
-                if (choiceText.includes('la') || choiceText.includes('las') || 
-                    choiceText.includes('una') || choiceText.includes('unas') ||
-                    choiceText.endsWith('a') || choiceText.includes('-a')) {
-                    return {
-                        choice: choice,
-                        confidence: 0.8,
-                        reasoning: 'Feminine nouns typically use la/las/una/unas and often end in -a'
-                    };
-                }
-            }
-        }
-        
-        return null;
-    };
-
-    // Enhanced conjugation question analysis
-    const analyzeConjugationQuestion = (questionText, choices) => {
-        const question = questionText.toLowerCase();
-        
-        // Infinitive identification
-        if (question.includes('infinitive')) {
-            for (const choice of choices) {
-                const choiceText = choice.text.toLowerCase();
-                if (choiceText.endsWith('ar') || choiceText.endsWith('er') || choiceText.endsWith('ir')) {
-                    return {
-                        choice: choice,
-                        confidence: 0.95,
-                        reasoning: 'Infinitives end in -ar, -er, or -ir'
-                    };
-                }
-            }
-        }
-        
-        // Tense identification
-        if (question.includes('present tense') || question.includes('presente')) {
-            // Look for present tense conjugations
-            for (const choice of choices) {
-                const choiceText = choice.text.toLowerCase().trim();
-                // Common present tense patterns
-                if (choiceText.match(/^(soy|eres|es|somos|son|tengo|tienes|tiene|tenemos|tienen)$/) ||
-                    choiceText.match(/o$|as$|a$|amos$|áis$|an$|es$|e$|emos$|éis$|en$|is$|ís$/)) {
-                    return {
-                        choice: choice,
-                        confidence: 0.75,
-                        reasoning: 'Present tense conjugation pattern detected'
-                    };
-                }
-            }
-        }
-        
-        if (question.includes('preterite') || question.includes('past')) {
-            // Look for preterite tense conjugations
-            for (const choice of choices) {
-                const choiceText = choice.text.toLowerCase().trim();
-                if (choiceText.match(/é$|aste$|ó$|amos$|asteis$|aron$|í$|iste$|ió$|imos$|isteis$|ieron$/)) {
-                    return {
-                        choice: choice,
-                        confidence: 0.75,
-                        reasoning: 'Preterite tense conjugation pattern detected'
-                    };
-                }
-            }
-        }
-        
-        return analyzeConjugation(questionText, choices);
-    };
-
-    // Vocabulary and translation analysis
-    const analyzeVocabularyQuestion = async (questionText, choices) => {
-        const question = questionText.toLowerCase();
-        
-        // Direct translation questions
-        for (const [english, spanish] of Object.entries(dictionary)) {
-            if (question.includes(english.toLowerCase())) {
-                for (const choice of choices) {
-                    const choiceText = choice.text.toLowerCase();
-                    if (choiceText.includes(spanish.toLowerCase()) || 
-                        spanish.toLowerCase().includes(choiceText) ||
-                        calculateSimilarity(choiceText, spanish.toLowerCase()) > 0.8) {
-                        return {
-                            choice: choice,
-                            confidence: 0.9,
-                            reasoning: `Dictionary match: "${english}" → "${spanish}"`
-                        };
-                    }
-                }
-            }
-        }
-        
-        // School vocabulary questions
-        if (question.includes('school') || question.includes('class') || question.includes('student')) {
-            for (const choice of choices) {
-                const choiceText = choice.text.toLowerCase();
-                // Check if choice contains school-related vocabulary
-                const schoolWords = ['escuela', 'colegio', 'clase', 'estudiante', 'maestro', 'profesor', 'aula', 'biblioteca', 'cafetería'];
-                if (schoolWords.some(word => choiceText.includes(word))) {
-                    return {
-                        choice: choice,
-                        confidence: 0.7,
-                        reasoning: 'School-related vocabulary match'
-                    };
-                }
-            }
-        }
-        
-        return null;
-    };
-        
-        // Method 6: Fallback to longest/most descriptive answer
-        if (!bestChoice || bestScore < 0.3) {
-            const longestChoice = choices.reduce((prev, current) => 
-                current.text.length > prev.text.length ? current : prev
-            );
-            
-            if (longestChoice.text.length > 10) {
-                bestChoice = longestChoice;
-                bestScore = 0.2;
-                bestReason = 'longest descriptive answer fallback';
-            }
-        }
-        
-        return bestChoice ? { 
-            choice: bestChoice, 
-            confidence: bestScore, 
-            reason: bestReason || 'pattern matching'
-        } : null;
-    };
-
-    // String similarity function
-    const calculateSimilarity = (str1, str2) => {
-        const longer = str1.length > str2.length ? str1 : str2;
-        const shorter = str1.length > str2.length ? str2 : str1;
-        
-        if (longer.length === 0) return 1.0;
-        
-        const editDistance = levenshteinDistance(longer, shorter);
-        return (longer.length - editDistance) / longer.length;
-    };
-
-    const levenshteinDistance = (str1, str2) => {
-        const matrix = [];
-        
-        for (let i = 0; i <= str2.length; i++) {
-            matrix[i] = [i];
-        }
-        
-        for (let j = 0; j <= str1.length; j++) {
-            matrix[0][j] = j;
-        }
-        
-        for (let i = 1; i <= str2.length; i++) {
-            for (let j = 1; j <= str1.length; j++) {
-                if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-                    matrix[i][j] = matrix[i - 1][j - 1];
-                } else {
-                    matrix[i][j] = Math.min(
-                        matrix[i - 1][j - 1] + 1,
-                        matrix[i][j - 1] + 1,
-                        matrix[i - 1][j] + 1
-                    );
-                }
-            }
-        }
-        
-        return matrix[str2.length][str1.length];
     };
 
     // Enhanced translation with AI support
@@ -1047,78 +668,37 @@ Respond with ONLY the Spanish translation, no explanations:`;
             }
         }
 
-        // Step 7: Try backup translation APIs
-        if (CONFIG.useBackupAPIs) {
-            try {
-                const backupTranslation = await translateWithFreeAPI(originalText);
-                if (backupTranslation) {
-                    log(`🌐 Backup API translation: "${originalText}" -> "${backupTranslation}"`);
-                    return backupTranslation;
-                }
-            } catch (error) {
-                log('❌ Backup translation failed:', error);
-            }
-        }
-
         log(`⚠️ No translation found for: "${originalText}"`);
         return null;
     };
 
-    // Free translation API fallback
-    const translateWithFreeAPI = async (text, retryCount = 0) => {
-        if (retryCount >= CONFIG.maxRetries) return null;
-
-        const apis = [
-            // Method 1: Google Translate (unofficial)
-            async () => {
-                const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=es&dt=t&q=${encodeURIComponent(text)}`;
-                const response = await fetch(url);
-                const data = await response.json();
-                return data[0]?.map(item => item[0]).join('').trim();
-            },
-            // Method 2: LibreTranslate
-            async () => {
-                const response = await fetch('https://libretranslate.de/translate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ q: text, source: 'en', target: 'es', format: 'text' })
-                });
-                const data = await response.json();
-                return data.translatedText?.trim();
-            },
-            // Method 3: MyMemory
-            async () => {
-                const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|es`;
-                const response = await fetch(url);
-                const data = await response.json();
-                if (data.responseData && !data.responseData.translatedText.includes('MYMEMORY WARNING')) {
-                    return data.responseData.translatedText.trim();
-                }
-                return null;
-            }
-        ];
-
-        for (let i = 0; i < apis.length; i++) {
-            try {
-                log(`🌐 Trying backup API ${i + 1} for: "${text}"`);
-                const result = await apis[i]();
-                if (result && result !== text && result.length > 0) {
-                    log(`✅ Backup API ${i + 1} success: "${text}" -> "${result}"`);
-                    return result;
-                }
-            } catch (error) {
-                log(`❌ Backup API ${i + 1} failed:`, error.message);
-                continue;
-            }
+    // Enhanced number conversion
+    const numberToWords = (num) => {
+        const ones = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+        const teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+        const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+        
+        if (num >= 0 && num <= 9) return ones[num];
+        if (num >= 10 && num <= 19) return teens[num - 10];
+        if (num >= 20 && num <= 99) {
+            const tensDigit = Math.floor(num / 10);
+            const onesDigit = num % 10;
+            return onesDigit === 0 ? tens[tensDigit] : `${tens[tensDigit]}-${ones[onesDigit]}`;
         }
+        if (num === 100) return 'one hundred';
+        return num.toString();
+    };
 
-        // Retry with exponential backoff
-        if (retryCount < CONFIG.maxRetries) {
-            await sleep(1000 * Math.pow(2, retryCount));
-            return translateWithFreeAPI(text, retryCount + 1);
-        }
-
-        return null;
+    // Simple visual feedback
+    const showVisualFeedback = (element, success, answer = '') => {
+        if (!CONFIG.enableVisualFeedback) return;
+        
+        element.style.border = success ? '2px solid green' : '2px solid orange';
+        if (answer) element.title = answer;
+        
+        setTimeout(() => {
+            element.style.border = '';
+        }, 2000);
     };
 
     // Enhanced question detection for Quia.com format
@@ -1303,23 +883,6 @@ Respond with ONLY the Spanish translation, no explanations:`;
         return foundInputs;
     };
 
-    // Enhanced number conversion
-    const numberToWords = (num) => {
-        const ones = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-        const teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-        const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-        
-        if (num >= 0 && num <= 9) return ones[num];
-        if (num >= 10 && num <= 19) return teens[num - 10];
-        if (num >= 20 && num <= 99) {
-            const tensDigit = Math.floor(num / 10);
-            const onesDigit = num % 10;
-            return onesDigit === 0 ? tens[tensDigit] : `${tens[tensDigit]}-${ones[onesDigit]}`;
-        }
-        if (num === 100) return 'one hundred';
-        return num.toString();
-    };
-
     // Extract question text
     const extractQuestionText = (container, input) => {
         if (!container) return '';
@@ -1442,8 +1005,12 @@ Respond with ONLY the Spanish translation, no explanations:`;
         try {
             log('🚀 Starting AI-enhanced Spanish quiz solver...');
             
-            // API key is already loaded from the embedded script
-            log('🔑 Using embedded API key');
+            // API key is already embedded in the script
+            if (CONFIG.geminiApiKey && CONFIG.geminiApiKey.length > 20) {
+                log('🔑 Using embedded API key');
+            } else {
+                log('⚠️ No API key found, using offline mode');
+            }
             
             // Process text input questions
             const textQuestions = findTextInputQuestions();
@@ -1600,13 +1167,6 @@ Respond with ONLY the Spanish translation, no explanations:`;
         log('🧠 Conjugation knowledge base loaded');
         
         createControlPanel();
-        
-        // Load API key from embedded script (no CORS issues)
-        const keyLoaded = loadFromGitHubScript();
-        const statusDiv = document.getElementById('solver-status');
-        if (statusDiv) {
-            statusDiv.textContent = keyLoaded ? 'AI Ready' : 'Offline';
-        }
         
         // Auto-start after page load if enabled
         if (CONFIG.enableAutoSubmit && document.readyState === 'complete') {
