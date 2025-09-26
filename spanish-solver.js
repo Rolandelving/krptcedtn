@@ -361,7 +361,6 @@
     let mcProcessedCount = 0;
     let mcSuccessCount = 0;
     let isProcessing = false;
-    let apiKeyLoaded = false;
 
     // Utility functions
     const log = (...args) => {
@@ -1109,11 +1108,8 @@ Respond with ONLY the Spanish translation, no explanations:`;
         try {
             log('🚀 Starting AI-enhanced Spanish quiz solver...');
             
-            // Load API key if not already loaded
-            if (!apiKeyLoaded) {
-                await loadApiKey();
-                apiKeyLoaded = true;
-            }
+            // API key is already loaded from the embedded script
+            log('🔑 Using embedded API key');
             
             // Process text input questions
             const textQuestions = findTextInputQuestions();
@@ -1201,6 +1197,7 @@ Respond with ONLY the Spanish translation, no explanations:`;
             if (newKey && newKey.trim()) {
                 CONFIG.geminiApiKey = newKey.trim();
                 statusDiv.textContent = 'AI Ready';
+                log('✅ API key updated');
             }
         };
         
@@ -1270,15 +1267,12 @@ Respond with ONLY the Spanish translation, no explanations:`;
         
         createControlPanel();
         
-        // Try to load API key on startup
-        setTimeout(async () => {
-            await loadApiKey();
-            apiKeyLoaded = true;
-            const statusDiv = document.getElementById('solver-status');
-            if (statusDiv) {
-                statusDiv.textContent = CONFIG.geminiApiKey ? '✅ AI Ready' : '⚠️ Offline Mode';
-            }
-        }, 1000);
+        // Load API key from embedded script (no CORS issues)
+        const keyLoaded = loadFromGitHubScript();
+        const statusDiv = document.getElementById('solver-status');
+        if (statusDiv) {
+            statusDiv.textContent = keyLoaded ? 'AI Ready' : 'Offline';
+        }
         
         // Auto-start after page load if enabled
         if (CONFIG.enableAutoSubmit && document.readyState === 'complete') {
@@ -1304,6 +1298,8 @@ Respond with ONLY the Spanish translation, no explanations:`;
             setApiKey: (key) => {
                 CONFIG.geminiApiKey = key;
                 log('✅ API key set via console');
+                const statusDiv = document.getElementById('solver-status');
+                if (statusDiv) statusDiv.textContent = 'AI Ready';
             }
         };
     };
