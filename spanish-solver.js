@@ -6,7 +6,7 @@
     
     // Configuration
     const CONFIG = {
-        GEMINI_API_KEY: 'YOUR_GEMINI_API_KEY_HERE', // Replace with actual API key
+        GEMINI_API_KEY: 'AIzaSyCHjKtFicwnohU5pqHtXpSoENrERnQyLmI', // Replace with actual API key
         GEMINI_ENDPOINT: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
         PROCESSING_DELAY: 400,
         AI_TIMEOUT: 5000,
@@ -519,33 +519,56 @@ Respond with ONLY the Spanish translation:`;
             };
             
             try {
-                const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${CONFIG.GEMINI_API_KEY}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestBody)
-                });
+                // Try multiple endpoints in order of preference
+                const endpoints = [
+                    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+                    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+                    'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent'
+                ];
                 
-                console.log('🌐 API Response status:', response.status);
+                let lastError = null;
                 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('❌ API Error:', response.status, errorText);
-                    throw new Error(`API request failed: ${response.status} - ${errorText}`);
+                for (const endpoint of endpoints) {
+                    try {
+                        console.log(`🔄 Trying endpoint: ${endpoint}`);
+                        
+                        const response = await fetch(`${endpoint}?key=${CONFIG.GEMINI_API_KEY}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(requestBody)
+                        });
+                        
+                        console.log('🌐 API Response status:', response.status);
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            console.log('📦 API Response data:', data);
+                            
+                            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                                const result = data.candidates[0].content.parts[0].text.trim();
+                                console.log('✅ AI Response:', result);
+                                return result;
+                            } else {
+                                console.error('❌ Invalid API response structure:', data);
+                                continue; // Try next endpoint
+                            }
+                        } else {
+                            const errorText = await response.text();
+                            console.warn(`⚠️ Endpoint ${endpoint} failed:`, response.status, errorText);
+                            lastError = new Error(`${response.status} - ${errorText}`);
+                            continue; // Try next endpoint
+                        }
+                    } catch (endpointError) {
+                        console.warn(`⚠️ Endpoint ${endpoint} error:`, endpointError.message);
+                        lastError = endpointError;
+                        continue; // Try next endpoint
+                    }
                 }
                 
-                const data = await response.json();
-                console.log('📦 API Response data:', data);
-                
-                if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-                    const result = data.candidates[0].content.parts[0].text.trim();
-                    console.log('✅ AI Response:', result);
-                    return result;
-                }
-                
-                console.error('❌ Invalid API response structure:', data);
-                throw new Error('Invalid API response format');
+                // If we get here, all endpoints failed
+                throw lastError || new Error('All API endpoints failed');
                 
             } catch (error) {
                 console.error('❌ AI Request failed:', error);
@@ -557,6 +580,8 @@ Respond with ONLY the Spanish translation:`;
                     console.error('🔑 Authentication Error - Check your API key');
                 } else if (error.message.includes('429')) {
                     console.error('⏱️ Rate Limited - Wait before trying again');
+                } else if (error.message.includes('404')) {
+                    console.error('🔍 Endpoint Not Found - API endpoint may have changed');
                 }
                 
                 throw error;
