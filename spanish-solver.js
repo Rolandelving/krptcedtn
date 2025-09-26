@@ -6,7 +6,7 @@
     
     // Configuration
     const CONFIG = {
-        GEMINI_API_KEY: 'AIzaSyCHjKtFicwnohU5pqHtXpSoENrERnQyLmI', // Replace with actual API key
+        GEMINI_API_KEY: 'YOUR_GEMINI_API_KEY_HERE', // Replace with actual API key
         GEMINI_ENDPOINT: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
         PROCESSING_DELAY: 400,
         AI_TIMEOUT: 5000,
@@ -76,6 +76,7 @@
             this.isProcessing = false;
             this.useAI = true;
             this.autoSubmit = false;
+            this.testMode = false; // Safe testing without clicking
             this.stats = { total: 0, answered: 0, aiUsed: 0 };
             this.controlPanel = null;
             
@@ -85,6 +86,11 @@
         init() {
             this.createControlPanel();
             this.scanForQuestions();
+            
+            // Test API key on startup if configured
+            if (CONFIG.GEMINI_API_KEY !== 'YOUR_GEMINI_API_KEY_HERE') {
+                setTimeout(() => this.testApiKey(), 1000);
+            }
         }
         
         // Control Panel UI
@@ -145,6 +151,12 @@
                     
                     <div style="margin-bottom: 8px;">
                         <label style="display: flex; align-items: center; gap: 5px; font-size: 11px;">
+                            <input type="checkbox" id="solver-test-mode"> Test Mode (Safe)
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 8px;">
+                        <label style="display: flex; align-items: center; gap: 5px; font-size: 11px;">
                             <input type="checkbox" id="solver-ai" checked> Use AI
                         </label>
                     </div>
@@ -177,6 +189,7 @@
         bindControlEvents() {
             document.getElementById('solver-start').addEventListener('click', () => this.startProcessing());
             document.getElementById('solver-stop').addEventListener('click', () => this.stopProcessing());
+            document.getElementById('solver-test-mode').addEventListener('change', (e) => this.testMode = e.target.checked);
             document.getElementById('solver-ai').addEventListener('change', (e) => this.useAI = e.target.checked);
             document.getElementById('solver-auto').addEventListener('change', (e) => this.autoSubmit = e.target.checked);
             document.getElementById('solver-api-key').addEventListener('click', () => this.updateApiKey());
@@ -216,7 +229,45 @@
             const newKey = prompt('Enter your Gemini API Key:', CONFIG.GEMINI_API_KEY);
             if (newKey && newKey.trim()) {
                 CONFIG.GEMINI_API_KEY = newKey.trim();
+                console.log('🔑 API Key updated successfully');
+                
+                // Test the API key
+                this.testApiKey();
+                
                 this.updateStatus('API Key Updated');
+            }
+        }
+        
+        async testApiKey() {
+            if (!CONFIG.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE') {
+                console.warn('⚠️ No API key configured');
+                return;
+            }
+            
+            try {
+                console.log('🧪 Testing API key...');
+                const testPrompt = 'Say "API test successful" in Spanish.';
+                const response = await this.queryGeminiAI(testPrompt);
+                
+                if (response) {
+                    console.log('✅ API key test successful!', response);
+                    this.updateStatus('AI Ready');
+                } else {
+                    console.error('❌ API key test failed - no response');
+                    this.updateStatus('AI Error');
+                }
+            } catch (error) {
+                console.error('❌ API key test failed:', error.message);
+                this.updateStatus('AI Error');
+                
+                // Show user-friendly error messages
+                if (error.message.includes('403') || error.message.includes('401')) {
+                    alert('❌ Invalid API key. Please check your Gemini API key.');
+                } else if (error.message.includes('CORS')) {
+                    alert('🚫 CORS error. Please host this script on GitHub and use jsDelivr CDN.');
+                } else {
+                    alert(`❌ AI test failed: ${error.message}`);
+                }
             }
         }
         
@@ -455,6 +506,8 @@ Respond with ONLY the Spanish translation:`;
                 throw new Error('API key not configured');
             }
             
+            console.log('🤖 Sending AI request...', { prompt: prompt.substring(0, 100) + '...' });
+            
             const requestBody = {
                 contents: [{
                     parts: [{ text: prompt }]
@@ -465,25 +518,49 @@ Respond with ONLY the Spanish translation:`;
                 }
             };
             
-            const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${CONFIG.GEMINI_API_KEY}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestBody)
-            });
-            
-            if (!response.ok) {
-                throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+            try {
+                const response = await fetch(`${CONFIG.GEMINI_ENDPOINT}?key=${CONFIG.GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+                
+                console.log('🌐 API Response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('❌ API Error:', response.status, errorText);
+                    throw new Error(`API request failed: ${response.status} - ${errorText}`);
+                }
+                
+                const data = await response.json();
+                console.log('📦 API Response data:', data);
+                
+                if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                    const result = data.candidates[0].content.parts[0].text.trim();
+                    console.log('✅ AI Response:', result);
+                    return result;
+                }
+                
+                console.error('❌ Invalid API response structure:', data);
+                throw new Error('Invalid API response format');
+                
+            } catch (error) {
+                console.error('❌ AI Request failed:', error);
+                
+                // Check for specific error types
+                if (error.message.includes('CORS')) {
+                    console.error('🚫 CORS Error - Try hosting the script on GitHub and using jsDelivr CDN');
+                } else if (error.message.includes('403') || error.message.includes('401')) {
+                    console.error('🔑 Authentication Error - Check your API key');
+                } else if (error.message.includes('429')) {
+                    console.error('⏱️ Rate Limited - Wait before trying again');
+                }
+                
+                throw error;
             }
-            
-            const data = await response.json();
-            
-            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-                return data.candidates[0].content.parts[0].text.trim();
-            }
-            
-            throw new Error('Invalid API response format');
         }
         
         // Answer Processing Pipeline
@@ -695,9 +772,22 @@ Respond with ONLY the Spanish translation:`;
         
         selectAnswer(question, choice) {
             if (choice && choice.element) {
-                choice.element.checked = true;
-                choice.element.dispatchEvent(new Event('change', { bubbles: true }));
-                choice.element.dispatchEvent(new Event('click', { bubbles: true }));
+                if (this.testMode) {
+                    // Test mode: Just highlight without clicking
+                    choice.element.style.background = '#fff3cd';
+                    choice.element.style.border = '2px solid #ffc107';
+                    choice.element.parentElement.style.background = '#fff3cd';
+                    
+                    // Add tooltip showing what would be selected
+                    choice.element.title = `TEST MODE: Would select "${choice.text}"`;
+                    
+                    console.log(`TEST MODE - Would select: "${choice.text}" for question: "${question.questionText}"`);
+                } else {
+                    // Normal mode: Actually select the answer
+                    choice.element.checked = true;
+                    choice.element.dispatchEvent(new Event('change', { bubbles: true }));
+                    choice.element.dispatchEvent(new Event('click', { bubbles: true }));
+                }
             }
         }
         
@@ -708,9 +798,16 @@ Respond with ONLY the Spanish translation:`;
             if (confidence >= 90) color = '#27ae60'; // Green for high confidence
             else if (confidence >= 70) color = '#f39c12'; // Orange for medium confidence
             
-            element.style.border = `2px solid ${color}`;
+            if (this.testMode) {
+                // In test mode, use dashed border to indicate it's a preview
+                element.style.border = `2px dashed ${color}`;
+                element.title = `TEST MODE: Would answer with ${confidence}% confidence`;
+            } else {
+                element.style.border = `2px solid ${color}`;
+                element.title = `Answered with ${confidence}% confidence`;
+            }
+            
             element.style.borderRadius = '4px';
-            element.title = `Answered with ${confidence}% confidence`;
         }
         
         // Processing Control
