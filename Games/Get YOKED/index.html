@@ -186,8 +186,8 @@
         try {
           log("=== GET YOKED Loading Debug ===");
           
-          const dataParts = getParts("Build/Web.data", 2);
-          const wasmParts = getParts("Build/Web.wasm", 1);
+          const dataParts = ["Build/Web.data"];
+          const wasmParts = ["Build/Web.wasm"];
           
           log(`Data parts: ${dataParts.join(', ')}`);
           log(`WASM parts: ${wasmParts.join(', ')}`);
