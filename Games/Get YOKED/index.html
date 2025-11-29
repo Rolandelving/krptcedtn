@@ -81,18 +81,27 @@
       }
 
       async function fetchPart(url) {
+        console.log("Fetching:", url);
         const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+        }
+        
         if (!response.body) {
           const ab = await response.arrayBuffer();
           loadedBytes += ab.byteLength;
+          console.log(`Loaded ${url}: ${ab.byteLength} bytes`);
           loadingText.textContent = `LOADING... ${formatSize(
             loadedBytes
           )} / ${formatSize(totalBytes)}`;
           return new Uint8Array(ab);
         }
+        
         const reader = response.body.getReader();
         const chunks = [];
         let received = 0;
+        
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
@@ -108,6 +117,7 @@
           )} / ${formatSize(totalBytes)} (${percent}%)`;
         }
 
+        console.log(`Loaded ${url}: ${received} bytes`);
         const full = new Uint8Array(received);
         let offset = 0;
         for (let chunk of chunks) {
@@ -120,15 +130,19 @@
       async function mergeParts(parts, mimeType) {
         const buffers = await Promise.all(parts.map(fetchPart));
         const totalLen = buffers.reduce((s, b) => s + b.length, 0);
+        console.log(`Merging ${parts.length} parts, total size: ${totalLen} bytes, MIME: ${mimeType}`);
+        
         const concatenated = new Uint8Array(totalLen);
         let off = 0;
         for (let b of buffers) {
           concatenated.set(b, off);
           off += b.length;
         }
-        return URL.createObjectURL(
-          new Blob([concatenated], { type: mimeType || undefined })
-        );
+        
+        const blob = new Blob([concatenated], { type: mimeType || "application/octet-stream" });
+        const url = URL.createObjectURL(blob);
+        console.log(`Created blob URL: ${url}, size: ${blob.size}, type: ${blob.type}`);
+        return url;
       }
 
       function getParts(file, count) {
@@ -142,14 +156,24 @@
           const dataParts = getParts("Build/Web.data", 2);
           const wasmParts = getParts("Build/Web.wasm", 1);
           const allParts = [...dataParts, ...wasmParts, "Build/Web.framework.js"];
+          
+          console.log("Loading parts:", allParts);
+          
           const sizes = await Promise.all(allParts.map(getSize));
           totalBytes = sizes.reduce((a, b) => a + b, 0);
+          
+          console.log("Total bytes to load:", totalBytes);
 
           const [dataUrl, wasmUrl, frameworkUrl] = await Promise.all([
-            mergeParts(dataParts),
+            mergeParts(dataParts, "application/octet-stream"),
             mergeParts(wasmParts, "application/wasm"),
             mergeParts(["Build/Web.framework.js"], "application/javascript"),
           ]);
+
+          console.log("All files merged successfully");
+          console.log("Data URL:", dataUrl);
+          console.log("WASM URL:", wasmUrl);
+          console.log("Framework URL:", frameworkUrl);
 
           const canvas = document.querySelector("#unity-canvas");
           let scaleToFit = true;
@@ -179,6 +203,7 @@
           onResize();
 
           // Wait until Unity loader is available
+          loadingText.textContent = "Waiting for Unity loader...";
           await (async function waitForLoader() {
             if (typeof createUnityInstance === "function") return;
             await new Promise((resolve) => {
@@ -191,6 +216,9 @@
             });
           })();
           
+          console.log("Unity loader ready, creating instance...");
+          loadingText.textContent = "Initializing Unity...";
+          
           const config = {
             dataUrl: dataUrl,
             frameworkUrl: frameworkUrl,
@@ -201,20 +229,24 @@
             productVersion: "0.5.0",
           };
           
+          console.log("Unity config:", config);
+          
           createUnityInstance(canvas, config, (progress) => {
             const percent = Math.round(progress * 100);
-            loadingText.textContent = `LOADING... ${percent}%`;
+            loadingText.textContent = `STARTING GAME... ${percent}%`;
+            console.log(`Unity loading progress: ${percent}%`);
           })
             .then((unityInstance) => {
+              console.log("Unity instance created successfully!");
               loadingText.remove();
             })
             .catch((message) => {
+              console.error("Unity instance creation failed:", message);
               loadingText.textContent = "Failed to start Unity: " + message;
-              console.error(message);
             });
         } catch (err) {
+          console.error("Error during initialization:", err);
           loadingText.textContent = "ERROR: " + (err.message || err);
-          console.error(err);
         }
       })();
     </script>
