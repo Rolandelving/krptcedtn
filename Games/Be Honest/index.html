@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>BeHonest</title>
-    <link rel="shortcut icon" href="https://raw.githack.com/Rolandelving/krptcedtn/main/Games/Be%20Honest/TemplateData/favicon.ico">
+    <link rel="shortcut icon" href="https://raw.githack.com/Rolandelving/krptcedtn/main/Games/BeHonest/TemplateData/favicon.ico">
     <style>
       * {
         margin: 0;
@@ -37,20 +37,20 @@
       #unity-logo {
         width: 154px;
         height: 130px;
-        background: url('https://raw.githack.com/Rolandelving/krptcedtn/main/Games/Be%20Honest/TemplateData/unity-logo-dark.png') no-repeat center;
+        background: url('https://raw.githack.com/Rolandelving/krptcedtn/main/Games/BeHonest/TemplateData/unity-logo-dark.png') no-repeat center;
       }
       #unity-progress-bar-empty {
         width: 141px;
         height: 18px;
         margin-top: 10px;
         margin-left: 6.5px;
-        background: url('https://raw.githack.com/Rolandelving/krptcedtn/main/Games/Be%20Honest/TemplateData/progress-bar-empty-dark.png') no-repeat center;
+        background: url('https://raw.githack.com/Rolandelving/krptcedtn/main/Games/BeHonest/TemplateData/progress-bar-empty-dark.png') no-repeat center;
       }
       #unity-progress-bar-full {
         width: 0%;
         height: 18px;
         margin-top: 10px;
-        background: url('https://raw.githack.com/Rolandelving/krptcedtn/main/Games/Be%20Honest/TemplateData/progress-bar-full-dark.png') no-repeat center;
+        background: url('https://raw.githack.com/Rolandelving/krptcedtn/main/Games/BeHonest/TemplateData/progress-bar-full-dark.png') no-repeat center;
       }
       #unity-warning {
         position: absolute;
@@ -102,9 +102,9 @@
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/BeHonest.loader.js";
       var config = {
-        dataUrl: "https://raw.githack.com/Rolandelving/krptcedtn/main/Games/Be%20Honest/Build/BeHonest.data/BeHonest.data",
-        frameworkUrl: "https://raw.githack.com/Rolandelving/krptcedtn/main/Games/Be%20Honest/Build/BeHonest.framework.js.gz/BeHonest.framework.js.gz",
-        codeUrl: "https://raw.githack.com/Rolandelving/krptcedtn/main/Games/Be%20Honest/Build/BeHonest.wasm/BeHonest.wasm",
+        dataUrl: "https://raw.githack.com/Rolandelving/krptcedtn/main/Games/BeHonest/Build/data/BeHonest.data.gz",
+        frameworkUrl: "https://raw.githack.com/Rolandelving/krptcedtn/main/Games/BeHonest/Build/framework/BeHonest.framework.js.gz",
+        codeUrl: "https://raw.githack.com/Rolandelving/krptcedtn/main/Games/BeHonest/Build/wasm/BeHonest.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "RebelJester",
         productName: "BeHonest",
@@ -120,11 +120,11 @@
         unityShowBanner('WebGL builds are not supported on mobile devices.');
       }
 
-      canvas.style.background = "url('https://raw.githack.com/Rolandelving/krptcedtn/main/Games/Be%20Honest/Build/BeHonest.jpg.gz/BeHonest.jpg.gz') center / cover";
+      canvas.style.background = "url('https://raw.githack.com/Rolandelving/krptcedtn/main/Games/BeHonest/Build/jpg/BeHonest.jpg.gz') center / cover";
       loadingBar.style.display = "block";
 
       var script = document.createElement("script");
-      script.src = "https://raw.githack.com/Rolandelving/krptcedtn/main/Games/Be%20Honest/Build/BeHonest.loader.js";
+      script.src = "https://raw.githack.com/Rolandelving/krptcedtn/main/Games/BeHonest/Build/BeHonest.loader.js";
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
