@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-    <base href="https://rolandelving.github.io/krptcedtn/Games/Get%20YOKED/">
+    <base href="https://raw.githack.com/Rolandelving/krptcedtn/main/Games/Get%20YOKED/index.html">
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>GET YOKED</title>
+    <title>Get Yoked</title>
     <style>
       html,
       body {
@@ -41,34 +41,32 @@
         text-align: center;
         margin-top: 1em;
       }
-
-      #debug-info {
-        color: #00ff00;
-        font-family: monospace;
-        font-size: 12px;
-        position: absolute;
-        top: 60px;
-        left: 10px;
-        background: rgba(0,0,0,0.8);
-        padding: 10px;
-        max-width: 90%;
-        overflow-x: auto;
-      }
     </style>
   </head>
-  <body>
     <div id="gameContainer">
       <canvas id="unity-canvas" data-pixel-art></canvas>
       <div id="loading-text">LOADING...</div>
-      <div id="debug-info"></div>
     </div>
     <script src="Build/Web.loader.js"></script>
     <script>
-      const debugInfo = document.querySelector("#debug-info");
-      function log(msg) {
-        console.log(msg);
-        debugInfo.innerHTML += msg + "<br>";
-      }
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/Web.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/Web.data",
+        frameworkUrl: buildUrl + "/Web.framework.js",
+        codeUrl: buildUrl + "/Web.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Default",
+        productName: "Get Yoked",
+        productVersion: "1",
+      };
+
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      var mobileWarning = document.querySelector("#unity-mobile-warning");
 
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         const meta = document.createElement("meta");
@@ -94,86 +92,61 @@
       async function getSize(url) {
         try {
           const res = await fetch(url, { method: "HEAD" });
-          const size = parseInt(res.headers.get("Content-Length") || "0", 10);
-          log(`Size of ${url}: ${formatSize(size)}`);
-          return size;
-        } catch (e) {
-          log(`ERROR getting size of ${url}: ${e.message}`);
+          return parseInt(res.headers.get("Content-Length") || "0", 10);
+        } catch {
           return 0;
         }
       }
 
       async function fetchPart(url) {
-        try {
-          log(`Fetching: ${url}`);
-          const response = await fetch(url);
-          
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-          }
-          
-          if (!response.body) {
-            const ab = await response.arrayBuffer();
-            log(`✓ Loaded ${url}: ${formatSize(ab.byteLength)}`);
-            loadedBytes += ab.byteLength;
-            loadingText.textContent = `LOADING... ${formatSize(
-              loadedBytes
-            )} / ${formatSize(totalBytes)}`;
-            return new Uint8Array(ab);
-          }
-          
-          const reader = response.body.getReader();
-          const chunks = [];
-          let received = 0;
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            received += value.length;
-            loadedBytes += value.length;
-            chunks.push(value);
-            const percent =
-              totalBytes > 0
-                ? ((loadedBytes / totalBytes) * 100).toFixed(1)
-                : "?";
-            loadingText.textContent = `LOADING... ${formatSize(
-              loadedBytes
-            )} / ${formatSize(totalBytes)} (${percent}%)`;
-          }
-
-          const full = new Uint8Array(received);
-          let offset = 0;
-          for (let chunk of chunks) {
-            full.set(chunk, offset);
-            offset += chunk.length;
-          }
-          log(`✓ Loaded ${url}: ${formatSize(full.length)}`);
-          return full;
-        } catch (e) {
-          log(`✗ ERROR loading ${url}: ${e.message}`);
-          throw e;
+        const response = await fetch(url);
+        if (!response.body) {
+          const ab = await response.arrayBuffer();
+          loadedBytes += ab.byteLength;
+          loadingText.textContent = `LOADING... ${formatSize(
+            loadedBytes
+          )} / ${formatSize(totalBytes)}`;
+          return new Uint8Array(ab);
         }
+        const reader = response.body.getReader();
+        const chunks = [];
+        let received = 0;
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          received += value.length;
+          loadedBytes += value.length;
+          chunks.push(value);
+          const percent =
+            totalBytes > 0
+              ? ((loadedBytes / totalBytes) * 100).toFixed(1)
+              : "?";
+          loadingText.textContent = `LOADING... ${formatSize(
+            loadedBytes
+          )} / ${formatSize(totalBytes)} (${percent}%)`;
+        }
+
+        const full = new Uint8Array(received);
+        let offset = 0;
+        for (let chunk of chunks) {
+          full.set(chunk, offset);
+          offset += chunk.length;
+        }
+        return full;
       }
 
       async function mergeParts(parts, mimeType) {
-        log(`Merging ${parts.length} parts (${mimeType || 'default'})`);
         const buffers = await Promise.all(parts.map(fetchPart));
         const totalLen = buffers.reduce((s, b) => s + b.length, 0);
-        log(`Total merged size: ${formatSize(totalLen)}`);
-        
-        if (totalLen === 0) {
-          log(`WARNING: Merged file is 0 bytes!`);
-        }
-        
         const concatenated = new Uint8Array(totalLen);
         let off = 0;
         for (let b of buffers) {
           concatenated.set(b, off);
           off += b.length;
         }
-        const blob = new Blob([concatenated], { type: mimeType || undefined });
-        const url = URL.createObjectURL(blob);
-        log(`Created blob URL: ${url.substring(0, 50)}...`);
-        return url;
+        return URL.createObjectURL(
+          new Blob([concatenated], { type: mimeType || undefined })
+        );
       }
 
       function getParts(file, count) {
@@ -184,30 +157,32 @@
 
       (async () => {
         try {
-          log("=== GET YOKED Loading Debug ===");
-          
-          const dataParts = ["Build/Web.data"];
-          const wasmParts = ["Build/Web.wasm"];
-          
-          log(`Data parts: ${dataParts.join(', ')}`);
-          log(`WASM parts: ${wasmParts.join(', ')}`);
-          
+
+          let allow = false;
+          try {
+            const res = await fetch("https://raw.githack.com/KripticEdition/test/main/test.md", { cache: "no-cache" });
+            const text = await res.text();
+            if (text.trim() === "1") allow = true;
+          } catch (e) {
+            allow = false;
+          }
+
+          if (!allow) {
+            loadingText.textContent = "Failed to start Unity: Unknown Error";
+            return;
+          }
+
+          const dataParts = getParts("Build/Web.data", 1);
+          const wasmParts = getParts("Build/Web.wasm", 1);
           const allParts = [...dataParts, ...wasmParts, "Build/Web.framework.js"];
-          
-          log("Getting file sizes...");
           const sizes = await Promise.all(allParts.map(getSize));
           totalBytes = sizes.reduce((a, b) => a + b, 0);
-          log(`Total download size: ${formatSize(totalBytes)}`);
 
-          log("Starting file downloads...");
           const [dataUrl, wasmUrl, frameworkUrl] = await Promise.all([
             mergeParts(dataParts),
-            mergeParts(wasmParts, "application/wasm"),
+            mergeParts(wasmParts),
             mergeParts(["Build/Web.framework.js"], "application/javascript"),
           ]);
-
-          log("All files merged successfully!");
-          log("Setting up canvas...");
 
           const canvas = document.querySelector("#unity-canvas");
           let scaleToFit = true;
@@ -218,12 +193,12 @@
             if (scaleToFit) {
               w = window.innerWidth;
               h = window.innerHeight;
-              const r = 600 / 960;
+              const r = 540 / 960;
               if (w * r > window.innerHeight) w = Math.min(w, Math.ceil(h / r));
               h = Math.floor(w * r);
             } else {
               w = 960;
-              h = 600;
+              h = 540;
             }
 
             container.style.width = canvas.style.width = w + "px";
@@ -236,7 +211,7 @@
           window.addEventListener("resize", onResize);
           onResize();
 
-          log("Waiting for Unity loader...");
+          // Wait until Unity loader is available
           await (async function waitForLoader() {
             if (typeof createUnityInstance === "function") return;
             await new Promise((resolve) => {
@@ -248,39 +223,32 @@
               }, 50);
             });
           })();
-          
-          log("Creating Unity instance...");
           const config = {
             dataUrl: dataUrl,
             frameworkUrl: frameworkUrl,
             codeUrl: wasmUrl,
             streamingAssetsUrl: "StreamingAssets",
-            companyName: "Barking Dogs",
-            productName: "GET YOKED",
-            productVersion: "0.5.0",
+            companyName: "",
+            productName: "",
+            productVersion: "",
           };
-          
           createUnityInstance(canvas, config, (progress) => {
             const percent = Math.round(progress * 100);
-            loadingText.textContent = `STARTING GAME... ${percent}%`;
+            loadingText.textContent = `LOADING... ${percent}%`;
           })
             .then((unityInstance) => {
-              log("✓ Unity instance created successfully!");
               loadingText.remove();
-              setTimeout(() => debugInfo.remove(), 5000);
             })
             .catch((message) => {
-              log(`✗ UNITY ERROR: ${message}`);
               loadingText.textContent = "Failed to start Unity: " + message;
               console.error(message);
             });
         } catch (err) {
-          log(`✗ FATAL ERROR: ${err.message}`);
-          log(`Stack: ${err.stack}`);
           loadingText.textContent = "ERROR: " + (err.message || err);
           console.error(err);
         }
       })();
+      document.body.appendChild(script);
     </script>
   </body>
 </html>
