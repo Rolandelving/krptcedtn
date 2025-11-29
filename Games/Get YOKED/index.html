@@ -40,6 +40,7 @@
         font-family: sans-serif;
         text-align: center;
         margin-top: 1em;
+        font-size: 18px;
       }
     </style>
   </head>
@@ -131,23 +132,24 @@
         );
       }
 
-      function getParts(file, count) {
-        const parts = [];
-        for (let i = 1; i <= count; i++) parts.push(file + ".part" + i);
-        return parts;
-      }
-
       (async () => {
         try {
-          // Define your file parts
-          const dataParts = getParts("Build/Web.data", 2);  // Web.data.part1, Web.data.part2
-          const wasmParts = ["Build/Web.wasm.part1"];  // Just one part
+          // Define your file parts based on your GitHub structure
+          const dataParts = [
+            "Build/Web.data.part1",
+            "Build/Web.data.part2"
+          ];
+          const wasmParts = ["Build/Web.wasm.part1"];
           const frameworkParts = ["Build/Web.framework.js"];
+          const loaderParts = ["Build/Web.loader.js"];
+          
           const allParts = [...dataParts, ...wasmParts, ...frameworkParts];
           
           // Get file sizes for progress tracking
           const sizes = await Promise.all(allParts.map(getSize));
           totalBytes = sizes.reduce((a, b) => a + b, 0);
+
+          loadingText.textContent = `LOADING FILES... 0%`;
 
           // Merge the parts into blob URLs
           const [dataUrl, wasmUrl, frameworkUrl] = await Promise.all([
@@ -155,6 +157,8 @@
             mergeParts(wasmParts, "application/wasm"),
             mergeParts(frameworkParts, "application/javascript"),
           ]);
+
+          loadingText.textContent = `INITIALIZING UNITY...`;
 
           const canvas = document.querySelector("#unity-canvas");
           let scaleToFit = true;
@@ -209,7 +213,7 @@
           
           createUnityInstance(canvas, config, (progress) => {
             const percent = Math.round(progress * 100);
-            loadingText.textContent = `LOADING... ${percent}%`;
+            loadingText.textContent = `STARTING GAME... ${percent}%`;
           })
             .then((unityInstance) => {
               loadingText.remove();
