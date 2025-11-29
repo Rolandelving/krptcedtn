@@ -55,7 +55,7 @@
       var config = {
         dataUrl: buildUrl + "/Web.data",
         frameworkUrl: buildUrl + "/Web.framework.js",
-        codeUrl: buildUrl + "/Web.wasm.part1",
+        codeUrl: buildUrl + "/Web.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Barking Dogs",
         productName: "GET YOKED",
@@ -156,7 +156,7 @@
         try {
          
           const dataParts = getParts("Build/Web.data", 2);  // Web.data.part1, Web.data.part2
-          const wasmParts = ["Build/Web.wasm.part1"];  // Just one part
+          const wasmParts = ["Build/Web.wasm"];  // Just one part
           const frameworkParts = ["Build/Web.framework.js"];
           const allParts = [...dataParts, ...wasmParts, ...frameworkParts];
           const sizes = await Promise.all(allParts.map(getSize));
