@@ -41,15 +41,35 @@
         text-align: center;
         margin-top: 1em;
       }
+
+      #debug-info {
+        color: #00ff00;
+        font-family: monospace;
+        font-size: 12px;
+        position: absolute;
+        top: 60px;
+        left: 10px;
+        background: rgba(0,0,0,0.8);
+        padding: 10px;
+        max-width: 90%;
+        overflow-x: auto;
+      }
     </style>
   </head>
   <body>
     <div id="gameContainer">
       <canvas id="unity-canvas" data-pixel-art></canvas>
       <div id="loading-text">LOADING...</div>
+      <div id="debug-info"></div>
     </div>
     <script src="Build/Web.loader.js"></script>
     <script>
+      const debugInfo = document.querySelector("#debug-info");
+      function log(msg) {
+        console.log(msg);
+        debugInfo.innerHTML += msg + "<br>";
+      }
+
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         const meta = document.createElement("meta");
         meta.name = "viewport";
@@ -74,63 +94,75 @@
       async function getSize(url) {
         try {
           const res = await fetch(url, { method: "HEAD" });
-          return parseInt(res.headers.get("Content-Length") || "0", 10);
-        } catch {
+          const size = parseInt(res.headers.get("Content-Length") || "0", 10);
+          log(`Size of ${url}: ${formatSize(size)}`);
+          return size;
+        } catch (e) {
+          log(`ERROR getting size of ${url}: ${e.message}`);
           return 0;
         }
       }
 
       async function fetchPart(url) {
-        console.log("Fetching:", url);
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
-        }
-        
-        if (!response.body) {
-          const ab = await response.arrayBuffer();
-          loadedBytes += ab.byteLength;
-          console.log(`Loaded ${url}: ${ab.byteLength} bytes`);
-          loadingText.textContent = `LOADING... ${formatSize(
-            loadedBytes
-          )} / ${formatSize(totalBytes)}`;
-          return new Uint8Array(ab);
-        }
-        
-        const reader = response.body.getReader();
-        const chunks = [];
-        let received = 0;
-        
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          received += value.length;
-          loadedBytes += value.length;
-          chunks.push(value);
-          const percent =
-            totalBytes > 0
-              ? ((loadedBytes / totalBytes) * 100).toFixed(1)
-              : "?";
-          loadingText.textContent = `LOADING... ${formatSize(
-            loadedBytes
-          )} / ${formatSize(totalBytes)} (${percent}%)`;
-        }
+        try {
+          log(`Fetching: ${url}`);
+          const response = await fetch(url);
+          
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+          
+          if (!response.body) {
+            const ab = await response.arrayBuffer();
+            log(`✓ Loaded ${url}: ${formatSize(ab.byteLength)}`);
+            loadedBytes += ab.byteLength;
+            loadingText.textContent = `LOADING... ${formatSize(
+              loadedBytes
+            )} / ${formatSize(totalBytes)}`;
+            return new Uint8Array(ab);
+          }
+          
+          const reader = response.body.getReader();
+          const chunks = [];
+          let received = 0;
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            received += value.length;
+            loadedBytes += value.length;
+            chunks.push(value);
+            const percent =
+              totalBytes > 0
+                ? ((loadedBytes / totalBytes) * 100).toFixed(1)
+                : "?";
+            loadingText.textContent = `LOADING... ${formatSize(
+              loadedBytes
+            )} / ${formatSize(totalBytes)} (${percent}%)`;
+          }
 
-        console.log(`Loaded ${url}: ${received} bytes`);
-        const full = new Uint8Array(received);
-        let offset = 0;
-        for (let chunk of chunks) {
-          full.set(chunk, offset);
-          offset += chunk.length;
+          const full = new Uint8Array(received);
+          let offset = 0;
+          for (let chunk of chunks) {
+            full.set(chunk, offset);
+            offset += chunk.length;
+          }
+          log(`✓ Loaded ${url}: ${formatSize(full.length)}`);
+          return full;
+        } catch (e) {
+          log(`✗ ERROR loading ${url}: ${e.message}`);
+          throw e;
         }
-        return full;
       }
 
       async function mergeParts(parts, mimeType) {
+        log(`Merging ${parts.length} parts (${mimeType || 'default'})`);
         const buffers = await Promise.all(parts.map(fetchPart));
         const totalLen = buffers.reduce((s, b) => s + b.length, 0);
-        console.log(`Merging ${parts.length} parts, total size: ${totalLen} bytes, MIME: ${mimeType}`);
+        log(`Total merged size: ${formatSize(totalLen)}`);
+        
+        if (totalLen === 0) {
+          log(`WARNING: Merged file is 0 bytes!`);
+        }
         
         const concatenated = new Uint8Array(totalLen);
         let off = 0;
@@ -138,10 +170,9 @@
           concatenated.set(b, off);
           off += b.length;
         }
-        
-        const blob = new Blob([concatenated], { type: mimeType || "application/octet-stream" });
+        const blob = new Blob([concatenated], { type: mimeType || undefined });
         const url = URL.createObjectURL(blob);
-        console.log(`Created blob URL: ${url}, size: ${blob.size}, type: ${blob.type}`);
+        log(`Created blob URL: ${url.substring(0, 50)}...`);
         return url;
       }
 
@@ -153,27 +184,30 @@
 
       (async () => {
         try {
+          log("=== GET YOKED Loading Debug ===");
+          
           const dataParts = getParts("Build/Web.data", 2);
           const wasmParts = getParts("Build/Web.wasm", 1);
+          
+          log(`Data parts: ${dataParts.join(', ')}`);
+          log(`WASM parts: ${wasmParts.join(', ')}`);
+          
           const allParts = [...dataParts, ...wasmParts, "Build/Web.framework.js"];
           
-          console.log("Loading parts:", allParts);
-          
+          log("Getting file sizes...");
           const sizes = await Promise.all(allParts.map(getSize));
           totalBytes = sizes.reduce((a, b) => a + b, 0);
-          
-          console.log("Total bytes to load:", totalBytes);
+          log(`Total download size: ${formatSize(totalBytes)}`);
 
+          log("Starting file downloads...");
           const [dataUrl, wasmUrl, frameworkUrl] = await Promise.all([
-            mergeParts(dataParts, "application/octet-stream"),
+            mergeParts(dataParts),
             mergeParts(wasmParts, "application/wasm"),
             mergeParts(["Build/Web.framework.js"], "application/javascript"),
           ]);
 
-          console.log("All files merged successfully");
-          console.log("Data URL:", dataUrl);
-          console.log("WASM URL:", wasmUrl);
-          console.log("Framework URL:", frameworkUrl);
+          log("All files merged successfully!");
+          log("Setting up canvas...");
 
           const canvas = document.querySelector("#unity-canvas");
           let scaleToFit = true;
@@ -202,8 +236,7 @@
           window.addEventListener("resize", onResize);
           onResize();
 
-          // Wait until Unity loader is available
-          loadingText.textContent = "Waiting for Unity loader...";
+          log("Waiting for Unity loader...");
           await (async function waitForLoader() {
             if (typeof createUnityInstance === "function") return;
             await new Promise((resolve) => {
@@ -216,9 +249,7 @@
             });
           })();
           
-          console.log("Unity loader ready, creating instance...");
-          loadingText.textContent = "Initializing Unity...";
-          
+          log("Creating Unity instance...");
           const config = {
             dataUrl: dataUrl,
             frameworkUrl: frameworkUrl,
@@ -229,24 +260,25 @@
             productVersion: "0.5.0",
           };
           
-          console.log("Unity config:", config);
-          
           createUnityInstance(canvas, config, (progress) => {
             const percent = Math.round(progress * 100);
             loadingText.textContent = `STARTING GAME... ${percent}%`;
-            console.log(`Unity loading progress: ${percent}%`);
           })
             .then((unityInstance) => {
-              console.log("Unity instance created successfully!");
+              log("✓ Unity instance created successfully!");
               loadingText.remove();
+              setTimeout(() => debugInfo.remove(), 5000);
             })
             .catch((message) => {
-              console.error("Unity instance creation failed:", message);
+              log(`✗ UNITY ERROR: ${message}`);
               loadingText.textContent = "Failed to start Unity: " + message;
+              console.error(message);
             });
         } catch (err) {
-          console.error("Error during initialization:", err);
+          log(`✗ FATAL ERROR: ${err.message}`);
+          log(`Stack: ${err.stack}`);
           loadingText.textContent = "ERROR: " + (err.message || err);
+          console.error(err);
         }
       })();
     </script>
