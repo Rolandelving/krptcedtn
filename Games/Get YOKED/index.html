@@ -154,16 +154,18 @@
 
       (async () => {
         try {
-          const dataParts = getParts("Build/Web.data", 2);
-          const wasmParts = getParts("Build/Web.wasm", 1);
-          const allParts = [...dataParts, ...wasmParts, "Build/Web.framework.js"];
+          // Adjust these numbers based on how many parts you actually have
+          const dataParts = getParts("Build/Web.data", 2);  // Web.data.part1, Web.data.part2
+          const wasmParts = ["Build/Web.wasm.part1"];  // Just one part
+          const frameworkParts = ["Build/Web.framework.js"];
+          const allParts = [...dataParts, ...wasmParts, ...frameworkParts];
           const sizes = await Promise.all(allParts.map(getSize));
           totalBytes = sizes.reduce((a, b) => a + b, 0);
 
           const [dataUrl, wasmUrl, frameworkUrl] = await Promise.all([
             mergeParts(dataParts),
             mergeParts(wasmParts),
-            mergeParts(["Build/Web.framework.js"], "application/javascript"),
+            mergeParts(frameworkParts, "application/javascript"),
           ]);
 
           const canvas = document.querySelector("#unity-canvas");
