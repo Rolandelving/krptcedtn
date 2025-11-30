@@ -1,0 +1,69 @@
+<div id="menu_lobby" class="menu">
+
+	<div class="header">
+		<div id="meta">
+			<span class="right"><div class="info">v0.4.2 beta</div></span>
+			<div id="share">
+				<div class="on twitter" id="twitter" data-hint="Share on Twitter"></div>
+				<div class="on facebook" id="facebook" data-hint="Share on Facebook"></div>
+				<div class="on gplus" id="gplus" data-hint="Share on Google+"></div>
+				<div class="on patreon" id="patreon" data-hint="Support on Patreon"></div>
+				<div class="on discord" id="discord" data-hint="Join our Discord"></div>
+			</div>
+		</div>
+
+		<div id="onlineCount"></div>
+		<span id="lobby_header_server"></span> &gt; Game Lobby &gt; <span id="lobby_header"></span>
+		
+	</div>
+	<div id="marquee"></div>
+
+	<div id="box_classes">
+		<div class="cla class_war empty host" id="player1"><div class="kick"><input type="button" class="button button_kick" value=" Kick" id="kick_p1" /></div><div class="name selectable selectV">&lt;P1&gt;</div><input type="button" value="&nbsp;X" class="button button_kickbot" /><div class="desc">Warrior</div><div class="arrows"><div class="arrow_left"></div><div class="arrow_right"></div></div><div class="job"></div></div>
+		<div class="cla class_war empty" id="player2"><div class="kick"><input type="button" class="button button_kick" value=" Kick" id="kick_p2" /></div><div class="name selectable">&lt;P2&gt;</div><input type="button" value="&nbsp;X" class="button button_kickbot" /><div class="desc">Warrior</div><div class="arrows"><div class="arrow_left"></div><div class="arrow_right"></div></div><div class="job"></div></div>
+		<div class="cla class_war empty" id="player3"><div class="kick"><input type="button" class="button button_kick" value=" Kick" id="kick_p3" /></div><div class="name selectable">&lt;P3&gt;</div><input type="button" value="&nbsp;X" class="button button_kickbot" /><div class="desc">Warrior</div><div class="arrows"><div class="arrow_left"></div><div class="arrow_right"></div></div><div class="job"></div></div>
+		<div class="cla class_war empty" id="player4"><div class="kick"><input type="button" class="button button_kick" value=" Kick" id="kick_p4" /></div><div class="name selectable">&lt;P4&gt;</div><input type="button" value="&nbsp;X" class="button button_kickbot" /><div class="desc">Warrior</div><div class="arrows"><div class="arrow_left"></div><div class="arrow_right"></div></div><div class="job"></div></div>
+	</div>
+
+	<div id="box_maps">
+		<div class="map selectable selectV" id="map_dungeon"><div class="desc">Dungeon</div></div>
+		<div class="map selectable" id="map_outpost"><div class="desc">Hideout</div></div>
+		
+		<div class="map selectable" id="map_temple"><div class="desc">Glade</div></div>
+		<div class="map selectable" id="map_court"><div class="desc">Courtyard</div></div>
+
+		<div class="map selectable" id="map_commons"><div class="desc">Cove</div></div>
+		<div class="map selectable" id="map_throne"><div class="desc">Throne</div></div>
+		
+	</div>
+
+	<div id="box_lobby">
+		<div id="chatLobby" class="chat">
+			<div id="chatLobbyOutput" class="inner"></div>
+			<input type="text" value="" id="chatLobbyInput" />
+		</div>
+	</div>
+
+	<div id="box_extra">
+
+		<div class="arrows"><div class="arrow_left" id="shot_prev"></div><div class="arrow_right" id="shot_next"></div></div>
+
+		<div id="shots"></div>
+
+	</div>
+
+	<div class="footer2">
+
+		<input type="button" value="&lt; Leave Lobby" class="button back backToLobbies selectB" id="lobby_leave" />
+		
+		<div class="forward">
+			<input type="button" value=" Ready!" class="button green lobby_ready selectStart" id="lobby_ready" />
+			<input type="button" value=" Lobby Options" class="button blue lobby_lobby_options selectX" id="button_lobby_options" />
+			<!--<input type="button" value=" Options" class="button lobby_options selectBack" />-->
+			<button class="button lobby_options selectBack" id="title_options"><span class="icon-settings">Options</span></button>
+		</div>
+
+	</div>
+	
+
+</div>

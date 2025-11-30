@@ -1,0 +1,78 @@
+{
+  "short_name": "Treasure Arena",
+  "name": "Treasure Arena",
+  "background_color": "#000000",
+  "description": "Treasure Arena is a free online multiplayer battle-arena!",
+  "dir": "ltr",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui", "browser"],
+  "display": "standalone",
+  "orientation": "landscape",
+  "scope": "/",
+  "start_url": "/",
+  "theme_color": "#000000",
+  "categories": [
+    "games"
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/1.jpg",
+      "sizes": "900x506",
+      "type": "image/jpg",
+      "platform": "wide"
+    },
+    {
+      "src": "screenshots/2.jpg",
+      "sizes": "900x506",
+      "type": "image/jpg",
+      "platform": "wide"
+    },
+    {
+      "src": "screenshots/3.jpg",
+      "sizes": "900x506",
+      "type": "image/jpg",
+      "platform": "wide"
+    },
+    {
+      "src": "screenshots/4.jpg",
+      "sizes": "900x506",
+      "type": "image/jpg",
+      "platform": "wide"
+    },
+    {
+      "src": "screenshots/5.jpg",
+      "sizes": "900x506",
+      "type": "image/jpg",
+      "platform": "wide"
+    },
+    {
+      "src": "screenshots/6.jpg",
+      "sizes": "900x506",
+      "type": "image/jpg",
+      "platform": "wide"
+    }
+  ],
+  "icons": [
+    {
+      "src": "appicon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "appicon_maskable.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    },
+    {
+      "src": "favicon.ico",
+      "type": "image/ico"
+    },
+    {
+      "src": "/favicon.ico",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [],
+  "lang": "en"
+}
